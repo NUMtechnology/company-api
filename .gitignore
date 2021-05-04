@@ -1,0 +1,9 @@
+dist
+node_modules
+
+**/scratch*.ts
+.vscode
+
+test/test_data*.json
+test/Bulk.test.ts
+test/test_locale.json

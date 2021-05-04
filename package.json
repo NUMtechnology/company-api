@@ -1,0 +1,48 @@
+{
+  "name": "company-api",
+  "version": "0.0.1",
+  "description": "A library to lookup NUM records recursively to produce an aggregated result.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "num-client": "^0.1.14",
+    "typescript": "^4.0.2"
+  },
+  "devDependencies": {
+    "@tsconfig/node10": "^1.0.7",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^14.0.13",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.25.0",
+    "mocha": "^8.1.3",
+    "ts-loader": "^7.0.5",
+    "ts-node": "^8.10.2"
+  },
+  "scripts": {
+    "test": "mocha --require ts-node/register 'test/**/*.ts'",
+    "debug": "mocha --require ts-node/register 'test/**/*.ts'",
+    "debug-trace": "mocha --trace-warnings --require ts-node/register 'test/**/*.ts'",
+    "version": "git add -A .",
+    "pretest": "npm run format && npm run lint && npm run build",
+    "preversion": "npm run format && npm run lint && npm run doc && npm run build",
+    "build": "tsc",
+    "doc": "typedoc",
+    "format": "prettier --write \"**/*.ts\"",
+    "lint": "eslint . --ext .ts",
+    "prepare": "npm test",
+    "publish": "git push && git push --tags --force"
+  },
+  "author": "NUM Technology Ltd",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NUMtechnology/typescript-schema-mapper.git"
+  },
+  "files": [
+    "dist/**/*",
+    "index.js"
+  ]
+}
