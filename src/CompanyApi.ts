@@ -47,7 +47,7 @@ class CompanyApiImpl implements CompanyApi {
 
   /**
    * Retrieve the MODL record for a NUM URI, lookup any links it contains (recursively) and produce a single JSON result
-   * with the links replaced by the records the refer to.
+   * with the links replaced by the records they refer to.
    *
    * @param uri a NumUri to retrieve
    * @return a Promise for a Record<string, unknown>
@@ -98,9 +98,11 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
         break; // The first item _should_ be the right one
       }
 
+      const subRecordsPromise = followLinks(client, usedUris, contactsObject, lookup.contactsUri);
+
       // Handle the imags promise second since we need to include the images in the contacts object.
       if (imagesPromise) {
-        imagesPromise.then((images) => {
+        return imagesPromise.then((images) => {
           if (images !== null) {
             const imagesObject = JSON.parse(images).images;
 
@@ -111,9 +113,12 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
               lookup.link.images = imagesObject;
             }
           }
+          return Promise.all([imagesPromise, subRecordsPromise]).then(() => {
+            return subRecordsPromise;
+          }, handleError);
         }, handleError);
       }
-      return followLinks(client, usedUris, contactsObject, lookup.contactsUri);
+      return subRecordsPromise;
     }, handleError);
   } else {
     const x = usedUris.get(contactsUriString) as Promise<string | null>;
