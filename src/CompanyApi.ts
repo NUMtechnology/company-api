@@ -29,7 +29,7 @@ export const createCompanyApi = (numClient?: NumClient): CompanyApi => new Compa
 // Internals
 //------------------------------------------------------------------------------------------------------------------------
 
-type UriToPromiseMap = Map<NumUri, Promise<string | null>>;
+type UriToPromiseMap = Map<string, Promise<string | null>>;
 
 /**
  * The CompanyApi implementation
@@ -54,7 +54,7 @@ class CompanyApiImpl implements CompanyApi {
    */
   lookupUri(uri: NumUri): Promise<Record<string, unknown>> {
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
-    return retrieveRecord(this.client, lookup, new Map<NumUri, Promise<string | null>>());
+    return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>());
   }
 
   lookupDomain(domain: string): Promise<Record<string, unknown>> {
@@ -70,66 +70,60 @@ class CompanyApiImpl implements CompanyApi {
  * @returns a Promise of a Record<string, unknown>
  */
 const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromiseMap): Promise<Record<string, unknown>> => {
-  let contactsPromise: Promise<string | null>;
-  let imagesPromise: Promise<string | null>;
-
   // Start a contacts record lookup if there isn't already one outstanding.
-  if (usedUris.has(lookup.contactsUri)) {
-    contactsPromise = usedUris.get(lookup.contactsUri)!;
-  } else {
-    contactsPromise = client.retrieveNumRecord(client.createContext(lookup.contactsUri));
-    usedUris.set(lookup.contactsUri, contactsPromise);
-  }
+  const contactsUriString = JSON.stringify(lookup.contactsUri);
+  if (!usedUris.has(contactsUriString)) {
+    const contactsPromise = client.retrieveNumRecord(client.createContext(lookup.contactsUri));
+    usedUris.set(contactsUriString, contactsPromise);
 
-  // Start an images record lookup if there isn't already one outstanding.
-  if (usedUris.has(lookup.imagesUri)) {
-    imagesPromise = usedUris.get(lookup.imagesUri)!;
-  } else {
-    imagesPromise = client.retrieveNumRecord(client.createContext(lookup.imagesUri));
-    usedUris.set(lookup.contactsUri, imagesPromise);
-  }
-
-  // When the contacts and images records are available...
-  return contactsPromise.then((contacts) => {
-    const contactsObject: Record<string, unknown> = contacts !== null ? JSON.parse(contacts) : {};
-    delete contactsObject['@n'];
-    if (contactsObject.organisation) {
-      lookup.link.organisation = contactsObject.organisation;
-    } else if (contactsObject.person) {
-      lookup.link.person = contactsObject.person;
-    } else if (contactsObject.department) {
-      lookup.link.department = contactsObject.department;
-    } else if (contactsObject.group) {
-      lookup.link.group = contactsObject.group;
-    } else if (contactsObject.location) {
-      lookup.link.location = contactsObject.location;
+    let imagesPromise;
+    // Start an images record lookup if there isn't already one outstanding.
+    const imagesUriString = JSON.stringify(lookup.imagesUri);
+    if (!usedUris.has(imagesUriString)) {
+      imagesPromise = client.retrieveNumRecord(client.createContext(lookup.imagesUri));
+      usedUris.set(imagesUriString, imagesPromise);
     }
 
-    imagesPromise.then((images) => {
-      if (images !== null) {
-        const imagesObj = JSON.parse(images).images;
-        if (contactsObject.organisation) {
-          const org = contactsObject.organisation as Record<string, unknown>;
-          org.images = imagesObj;
-        } else if (contactsObject.person) {
-          const person = contactsObject.person as Record<string, unknown>;
-          person.images = imagesObj;
-        } else if (contactsObject.department) {
-          const dept = contactsObject.department as Record<string, unknown>;
-          dept.images = imagesObj;
-        } else if (contactsObject.group) {
-          const group = contactsObject.group as Record<string, unknown>;
-          group.images = imagesObj;
-        } else if (contactsObject.location) {
-          const location = contactsObject.location as Record<string, unknown>;
-          location.images = imagesObj;
-        } else {
-          contactsObject.images = imagesObj;
-        }
+    // When the contacts and images records are available...
+    return contactsPromise.then((contacts) => {
+      const contactsObject: Record<string, unknown> = contacts !== null ? JSON.parse(contacts) : {};
+      delete contactsObject['@n'];
+
+      let contactsSubObject: Record<string, unknown> | null = null;
+
+      // There should only be one key left after deleting the `@n` key...
+      for (const k in contactsObject) {
+        lookup.link[k] = contactsObject[k];
+        contactsSubObject = contactsObject[k] as Record<string, unknown>;
+        break; // The first item _should_ be the right one
       }
-    });
-    return followLinks(client, usedUris, contactsObject, lookup.contactsUri);
-  }, handleError);
+
+      // Handle the imags promise second since we need to include the images in the contacts object.
+      if (imagesPromise) {
+        imagesPromise.then((images) => {
+          if (images !== null) {
+            const imagesObject = JSON.parse(images).images;
+
+            if (contactsSubObject !== null) {
+              contactsSubObject.images = imagesObject;
+            } else {
+              // Fallback is to set the images on the link itself.
+              lookup.link.images = imagesObject;
+            }
+          }
+        }, handleError);
+      }
+      return followLinks(client, usedUris, contactsObject, lookup.contactsUri);
+    }, handleError);
+  } else {
+    const x = usedUris.get(contactsUriString) as Promise<string | null>;
+    return x.then((s) => {
+      if (s) {
+        return Promise.resolve(JSON.parse(s));
+      }
+      return Promise.resolve(null);
+    }, handleError);
+  }
 };
 
 const followLinks = (client: NumClient, usedUris: UriToPromiseMap, jsonObj: Record<string, unknown>, currentUri: NumUri): Promise<Record<string, unknown>> => {
@@ -152,11 +146,15 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
     if (k === 'link') {
       const link = obj[k] as Record<string, unknown>;
       const path = link['@L'] as string;
-      const newUrlPath = new UrlPath(uri.path.s + path);
+      const newUrlPath = path.startsWith('/')
+        ? new UrlPath(path)
+        : uri.path.s.endsWith('/')
+        ? new UrlPath(uri.path.s + path)
+        : new UrlPath(uri.path.s + '/' + path);
       links.push(new Link(link, uri.withPath(newUrlPath)));
     } else {
       const value = obj[k];
-      if (typeof value === 'object') {
+      if (value !== null && typeof value === 'object') {
         findLinks(value as Record<string, unknown>, uri).forEach((l) => links.push(l));
       }
     }
