@@ -50,28 +50,36 @@ class CompanyApiImpl implements CompanyApi {
    * with the links replaced by the records they refer to.
    *
    * @param uri a NumUri to retrieve
-   * @return a Promise for a Record<string, unknown>
+   * @returns a Promise for a Record<string, unknown>
    */
   lookupUri(uri: NumUri): Promise<Record<string, unknown>> {
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
     return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>());
   }
 
+  /**
+   * Lookup a domain name string.
+   * 
+   * @param domain A domain name string
+   * @return a Promise for a Record<string, unknown>
+   */
   lookupDomain(domain: string): Promise<Record<string, unknown>> {
     return this.lookupUri(buildNumUri(domain));
   }
 }
 
 /**
- *
+ * Retrieve linked NUM records recursively
+ * 
  * @param client the NumClient to use for lookups
- * @param uri the uri to lookup
- * @param usedUris an Array of NumUri's that have already been looked up - prevents infinite recursion
+ * @param lookup a Lookup object
+ * @param usedUris a Map of NumUri's that have already been looked up - prevents infinite recursion
  * @returns a Promise of a Record<string, unknown>
  */
 const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromiseMap): Promise<Record<string, unknown>> => {
   // Start a contacts record lookup if there isn't already one outstanding.
   const contactsUriString = JSON.stringify(lookup.contactsUri);
+
   if (!usedUris.has(contactsUriString)) {
     const contactsPromise = client.retrieveNumRecord(client.createContext(lookup.contactsUri));
     usedUris.set(contactsUriString, contactsPromise);
@@ -98,6 +106,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
         break; // The first item _should_ be the right one
       }
 
+      // Follow any `link` records
       const subRecordsPromise = followLinks(client, usedUris, contactsObject, lookup.contactsUri);
 
       // Handle the imags promise second since we need to include the images in the contacts object.
@@ -121,8 +130,9 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
       return subRecordsPromise;
     }, handleError);
   } else {
-    const x = usedUris.get(contactsUriString) as Promise<string | null>;
-    return x.then((s) => {
+    // We have an existing outstanding promise so resolve it.
+    const contactsUriPromise = usedUris.get(contactsUriString) as Promise<string | null>;
+    return contactsUriPromise.then((s) => {
       if (s) {
         return Promise.resolve(JSON.parse(s));
       }
@@ -131,6 +141,15 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
   }
 };
 
+/**
+ * Find any `link` records in the given jsonObj and resolve them recursively
+ * 
+ * @param client the NumClient to use
+ * @param usedUris a Map of NumUri's we have already looked up in higher level calls.
+ * @param jsonObj the result of the higher level NUM lookup - it might contain `link`s
+ * @param currentUri the uri of the higher level NUM lookup - we need it as a base for links
+ * @returns a Promise of a Record<string, unknown>
+ */
 const followLinks = (client: NumClient, usedUris: UriToPromiseMap, jsonObj: Record<string, unknown>, currentUri: NumUri): Promise<Record<string, unknown>> => {
   const promises = findLinks(jsonObj, currentUri).map((l) => {
     const lookup = new Lookup(l.link, l.uri.withPort(MODULE_1), l.uri.withPort(MODULE_3));
@@ -141,10 +160,21 @@ const followLinks = (client: NumClient, usedUris: UriToPromiseMap, jsonObj: Reco
   }, handleError);
 };
 
+/**
+ * A general error handler.
+ * 
+ * @param reason a description of the error
+ */
 const handleError = (reason: string): Promise<Record<string, unknown>> => {
   throw new Error(reason);
 };
 
+/**
+ * 
+ * @param obj Search an object recursively for links
+ * @param uri the URI of the current record.
+ * @returns an Array of Link objects.
+ */
 const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
   const links = new Array<Link>();
   for (const k in obj) {
@@ -154,8 +184,8 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
       const newUrlPath = path.startsWith('/')
         ? new UrlPath(path)
         : uri.path.s.endsWith('/')
-        ? new UrlPath(uri.path.s + path)
-        : new UrlPath(uri.path.s + '/' + path);
+          ? new UrlPath(uri.path.s + path)
+          : new UrlPath(uri.path.s + '/' + path);
       links.push(new Link(link, uri.withPath(newUrlPath)));
     } else {
       const value = obj[k];
@@ -171,9 +201,12 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
  * Hold information about a NUM lookup whose result needs to be added to the `target` object.
  */
 class Lookup {
-  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) {}
+  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) { }
 }
 
+/**
+ * Hold information about a link that we need to look up.
+ */
 class Link {
-  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) {}
+  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) { }
 }

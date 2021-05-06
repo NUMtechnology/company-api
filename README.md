@@ -8,3 +8,31 @@ An API for aggregating Contacts Module and Images Module Records into a single o
 - `npm install`
 - `webpack`
 - Open `test/index.html` in your browser.
+
+## Simple Usage
+
+```json
+import { createCompanyApi } from './CompanyApi';
+
+const api = createCompanyApi();
+
+api.lookupDomain('numexample.com').then((result) => {
+  console.log(JSON.stringify(result));
+});
+```
+
+## Supplying a NUMClient Object
+
+If you already have a NUMClient object you can re-use it.
+```json
+import { createClient } from 'num-client';
+import { createCompanyApi } from './CompanyApi';
+
+const existingClient = createClient();
+
+const api = createCompanyApi(existingClient);
+
+api.lookupDomain('numexample.com').then((result) => {
+  console.log(JSON.stringify(result));
+});
+```
