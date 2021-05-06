@@ -47,7 +47,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NUMtechnology/typescript-schema-mapper.git"
+    "url": "https://github.com/NUMtechnology/company-api.git"
   },
   "files": [
     "dist/**/*",
