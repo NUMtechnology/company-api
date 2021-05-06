@@ -1,3 +1,3 @@
 import { createCompanyApi } from './CompanyApi';
 
-export const companyApi = createCompanyApi();
+export const api = createCompanyApi();

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>NUM Company API Example</title>
+</head>
+
+<body>
+  <script src="../dist/bundle.js"></script>
+  <h1>NUM Company API Example</h1>
+  <div>
+    Domain = <input type="text" value="aviva.co.uk" id='urivalue' onchange="reloadRecord()">
+    <input type="button" value="Reload" onclick="reloadRecord()"><span id="duration"></span>
+  </div>
+  <div style="border: 1px solid blue;width: fit-content;">
+    <pre id='num'></pre>
+  </div>
+  <script>
+
+    function lookup(uri) {
+      return CompanyApi.api.lookupDomain(uri);
+    }
+
+    function reloadRecord() {
+      const uri = document.getElementById('urivalue').value;
+      const start = Date.now();
+      lookup(uri).then((result) => {
+        const end = Date.now();
+        const duration = end - start;
+        const pretty = JSON.stringify(result, null, 1);
+        document.getElementById('num').innerHTML = pretty;
+        document.getElementById('duration').innerHTML = `${duration}ms`;
+      });
+
+    }
+
+    window.addEventListener('load', function () {
+      reloadRecord();
+    });
+
+  </script>
+</body>
+
+</html>
