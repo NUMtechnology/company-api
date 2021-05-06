@@ -11,7 +11,7 @@ An API for aggregating Contacts Module and Images Module Records into a single o
 
 ## Simple Usage
 
-```json
+```typescript
 import { createCompanyApi } from './CompanyApi';
 
 const api = createCompanyApi();
@@ -24,7 +24,7 @@ api.lookupDomain('numexample.com').then((result) => {
 ## Supplying a NUMClient Object
 
 If you already have a NUMClient object you can re-use it.
-```json
+```typescript
 import { createClient } from 'num-client';
 import { createCompanyApi } from './CompanyApi';
 
