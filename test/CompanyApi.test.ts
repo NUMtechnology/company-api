@@ -33,6 +33,19 @@ describe('Company API', () => {
       '{"organisation":{"object_display_name":"Organisation","name":"dummy-cyclic.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John","person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"link":{"@L":"/","description":"John"}}]}}}]}}'
     );
   });
+
+  it('Can lookup a NUM URI using a CompanyApi instance for a record with absolute NUM URIs as links', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('dummy-absolute.com'));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal(
+      '{"organisation":{"object_display_name":"Organisation","name":"dummy-absolute.com","slogan":null,"contacts":[{"link":{"@L":"num://absolute-link.com:3/sub-page-1","description":"John","person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"link":{"@L":"/","description":"John"}}]}}}]}}'
+    );
+  });
 });
 
 class DummyNumClient implements NumClient {
@@ -73,6 +86,15 @@ class DummyNumClient implements NumClient {
     } else if (ctx.numAddress.host.s === 'dummy-cyclic.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 1) {
       r = '{"@n":1,"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"link":{"@L":"/","description":"John"}}]}}';
     } else if (ctx.numAddress.host.s === 'dummy-cyclic.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 3) {
+      r = null;
+    } else if (ctx.numAddress.host.s === 'dummy-absolute.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 1) {
+      r =
+        '{"@n":1,"organisation":{"object_display_name":"Organisation","name":"dummy-absolute.com","slogan":null,"contacts":[{"link":{"@L":"num://absolute-link.com:3/sub-page-1","description":"John"}}]}}';
+    } else if (ctx.numAddress.host.s === 'dummy-absolute.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 3) {
+      r = null;
+    } else if (ctx.numAddress.host.s === 'absolute-link.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 1) {
+      r = '{"@n":1,"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"link":{"@L":"/","description":"John"}}]}}';
+    } else if (ctx.numAddress.host.s === 'absolute-link.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 3) {
       r = null;
     } else {
       console.log(`UNKNOWN numAddress = ${ctx.numAddress}`);

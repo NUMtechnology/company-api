@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { buildNumUri, createClient, MODULE_1, MODULE_3, NumClient, NumUri, UrlPath } from 'num-client';
+import { buildNumUri, createClient, MODULE_1, MODULE_3, NumClient, NumUri, parseNumUri, UrlPath } from 'num-client';
 //------------------------------------------------------------------------------------------------------------------------
 // Exports
 //------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ class CompanyApiImpl implements CompanyApi {
 
   /**
    * Lookup a domain name string.
-   * 
+   *
    * @param domain A domain name string
    * @return a Promise for a Record<string, unknown>
    */
@@ -70,7 +70,7 @@ class CompanyApiImpl implements CompanyApi {
 
 /**
  * Retrieve linked NUM records recursively
- * 
+ *
  * @param client the NumClient to use for lookups
  * @param lookup a Lookup object
  * @param usedUris a Map of NumUri's that have already been looked up - prevents infinite recursion
@@ -143,7 +143,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
 
 /**
  * Find any `link` records in the given jsonObj and resolve them recursively
- * 
+ *
  * @param client the NumClient to use
  * @param usedUris a Map of NumUri's we have already looked up in higher level calls.
  * @param jsonObj the result of the higher level NUM lookup - it might contain `link`s
@@ -162,7 +162,7 @@ const followLinks = (client: NumClient, usedUris: UriToPromiseMap, jsonObj: Reco
 
 /**
  * A general error handler.
- * 
+ *
  * @param reason a description of the error
  */
 const handleError = (reason: string): Promise<Record<string, unknown>> => {
@@ -170,7 +170,7 @@ const handleError = (reason: string): Promise<Record<string, unknown>> => {
 };
 
 /**
- * 
+ *
  * @param obj Search an object recursively for links
  * @param uri the URI of the current record.
  * @returns an Array of Link objects.
@@ -181,12 +181,14 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
     if (k === 'link') {
       const link = obj[k] as Record<string, unknown>;
       const path = link['@L'] as string;
-      const newUrlPath = path.startsWith('/')
-        ? new UrlPath(path)
+      const newUri = path.startsWith('num://')
+        ? parseNumUri(path)
+        : path.startsWith('/')
+        ? uri.withPath(new UrlPath(path))
         : uri.path.s.endsWith('/')
-          ? new UrlPath(uri.path.s + path)
-          : new UrlPath(uri.path.s + '/' + path);
-      links.push(new Link(link, uri.withPath(newUrlPath)));
+        ? uri.withPath(new UrlPath(uri.path.s + path))
+        : uri.withPath(new UrlPath(uri.path.s + '/' + path));
+      links.push(new Link(link, newUri));
     } else {
       const value = obj[k];
       if (value !== null && typeof value === 'object') {
@@ -201,12 +203,12 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
  * Hold information about a NUM lookup whose result needs to be added to the `target` object.
  */
 class Lookup {
-  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) { }
+  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) {}
 }
 
 /**
  * Hold information about a link that we need to look up.
  */
 class Link {
-  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) { }
+  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) {}
 }
