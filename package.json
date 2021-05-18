@@ -1,14 +1,14 @@
 {
   "name": "company-api",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A library to lookup NUM records recursively to produce an aggregated result.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "assert": "^2.0.0",
-    "modl-interpreter": "0.0.11",
-    "num-client": "^0.1.19",
-    "object-unpacker": "0.0.11",
+    "modl-interpreter": "0.0.12",
+    "num-client": "^0.1.22",
+    "object-unpacker": "0.0.13",
     "url": "^0.11.0",
     "util": "^0.12.3"
   },
@@ -22,10 +22,12 @@
     "chai": "^4.2.0",
     "eslint": "^7.25.0",
     "mocha": "^8.1.3",
+    "prettier": "^2.3.0",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.2",
     "typescript": "^4.0.2",
-    "webpack": "^5.23.0"
+    "webpack": "^5.23.0",
+    "webpack-cli": "^4.7.0"
   },
   "scripts": {
     "test": "mocha --require ts-node/register 'test/**/*.ts'",
@@ -39,7 +41,7 @@
     "doc": "typedoc",
     "format": "prettier --write \"**/*.ts\"",
     "lint": "eslint . --ext .ts",
-    "prepare": "npm test",
+    "prepare": "npm test && webpack",
     "publish": "git push && git push --tags --force"
   },
   "author": "NUM Technology Ltd",
