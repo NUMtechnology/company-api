@@ -10,7 +10,9 @@
   <script src="../dist/bundle.js"></script>
   <h1>NUM Company API Example</h1>
   <div>
-    Domain = <input type="text" value="aviva.co.uk" id='urivalue' onchange="reloadRecord()">
+    <p>Domain = <input type="text" value="aviva.co.uk" id='urivalue' onchange="reloadRecord()"></p>
+    <p>Contacts Query Depth = <input type="text" value="1" min=0 size=5 id='contactsDepth'></p>
+    <p>Images Query Depth = <input type="text" value="0" min=0 size=5 id='imagesDepth'></p>
     <input type="button" value="Reload" onclick="reloadRecord()"><span id="duration"></span>
   </div>
   <div style="border: 1px solid blue;width: fit-content;">
@@ -18,14 +20,20 @@
   </div>
   <script>
 
-    function lookup(uri) {
-      return CompanyApi.api.lookupDomain(uri);
+    function lookup(uri, options) {
+      return CompanyApi.api.lookupDomain(uri, options);
     }
 
     function reloadRecord() {
+      const contactsDepthStr = document.getElementById('contactsDepth').value;
+      const imagesDepthStr = document.getElementById('imagesDepth').value;
+      const contactsDepth = parseInt(contactsDepthStr);
+      const imagesDepth = parseInt(imagesDepthStr);
+
       const uri = document.getElementById('urivalue').value;
       const start = Date.now();
-      lookup(uri).then((result) => {
+
+      lookup(uri, new CompanyApi.CompanyApiOptions(contactsDepth, imagesDepth)).then((result) => {
         const end = Date.now();
         const duration = end - start;
         const pretty = JSON.stringify(result, null, 1);

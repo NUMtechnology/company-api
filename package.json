@@ -1,14 +1,14 @@
 {
   "name": "company-api",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A library to lookup NUM records recursively to produce an aggregated result.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "assert": "^2.0.0",
     "modl-interpreter": "0.0.12",
-    "num-client": "^0.1.22",
-    "object-unpacker": "0.0.13",
+    "num-client": "^0.1.23",
+    "object-unpacker": "0.0.14",
     "url": "^0.11.0",
     "util": "^0.12.3"
   },

@@ -5,7 +5,7 @@ import { Context, NumLocation, UserVariable } from 'num-client/dist/context';
 import { ModuleDnsQueries } from 'num-client/dist/modulednsqueries';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
 import { createModuleDnsQueries } from '../../num-javascript-client/src/modulednsqueries';
-import { createCompanyApi } from '../src/CompanyApi';
+import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
 
 describe('Company API', () => {
   it('Can lookup a NUM URI using a CompanyApi instance', async () => {
@@ -14,6 +14,69 @@ describe('Company API', () => {
     const api = createCompanyApi(dummy);
 
     const result = await api.lookupUri(buildNumUri('dummy.com'));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal(
+      '{"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John","person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":"123123","hours":null}}],"images":[{"name":null,"type":"headshot","variants":[{"url":"1088937600.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}}},{"link":{"@L":"sub-page-2","description":"Jane","person":{"object_display_name":"Person","name":"Jane Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":"456456456","hours":null}}]}}}],"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}}'
+    );
+  });
+
+  it('Can lookup a NUM URI using a CompanyApi instance with contacts depth 0 and images depth 0', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(0, 0));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal('{}');
+  });
+
+  it('Can lookup a NUM URI using a CompanyApi instance with contacts depth 1 and images depth 0', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 0));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal(
+      '{"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John"}},{"link":{"@L":"sub-page-2","description":"Jane"}}]}}'
+    );
+  });
+
+  it('Can lookup a NUM URI using a CompanyApi instance with contacts depth 1 and images depth 1', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 1));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal(
+      '{"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John"}},{"link":{"@L":"sub-page-2","description":"Jane"}}],"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}}'
+    );
+  });
+
+  it('Can lookup a NUM URI using a CompanyApi instance with contacts depth 2 and images depth 1', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 1));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal(
+      '{"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John","person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":"123123","hours":null}}]}}},{"link":{"@L":"sub-page-2","description":"Jane","person":{"object_display_name":"Person","name":"Jane Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":"456456456","hours":null}}]}}}],"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}}'
+    );
+  });
+
+  it('Can lookup a NUM URI using a CompanyApi instance with contacts depth 2 and images depth 2', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 2));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(

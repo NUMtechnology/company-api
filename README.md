@@ -27,6 +27,25 @@ api.lookupDomain('numexample.com').then((result) => {
 });
 ```
 
+## Controlling the Recursion Levels
+
+```typescript
+import { createCompanyApi } from './CompanyApi';
+
+// Create an API instance
+const api = createCompanyApi();
+
+const options = new CompanyApiOptions(
+    2, // The number of levels for Contacts records. 0 returns no contacts data.
+    1 // The number of levels for Images records. 0 returns no images data.
+  );
+
+// Use it to look up a domain
+api.lookupDomain('numexample.com', options).then((result) => {
+  console.log(JSON.stringify(result));
+});
+```
+
 ## Supplying an Existing NUMClient Object
 
 If you already have a NUMClient object you can re-use it.

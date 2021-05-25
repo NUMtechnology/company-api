@@ -12,10 +12,25 @@ export interface CompanyApi {
    * with the links replaced by the records the refer to.
    *
    * @param uri a NumUri to retrieve
+   * @param options an optional CompanyApiOptions object
    * @return a Promise for a Record<string, unknown>
    */
-  lookupUri(uri: NumUri): Promise<Record<string, unknown>>;
-  lookupDomain(domain: string): Promise<Record<string, unknown>>;
+  lookupUri(uri: NumUri, options?: CompanyApiOptions): Promise<Record<string, unknown>>;
+  lookupDomain(domain: string, options?: CompanyApiOptions): Promise<Record<string, unknown>>;
+}
+
+/**
+ * Options for use with the CompanyApi
+ */
+export class CompanyApiOptions {
+  constructor(readonly contactsDepth: number, readonly imagesDepth: number) {
+    if (!Number.isInteger(this.contactsDepth) || this.contactsDepth < 0) {
+      this.contactsDepth = 0;
+    }
+    if (!Number.isInteger(this.imagesDepth) || this.imagesDepth < 0) {
+      this.imagesDepth = 0;
+    }
+  }
 }
 
 /**
@@ -50,21 +65,28 @@ class CompanyApiImpl implements CompanyApi {
    * with the links replaced by the records they refer to.
    *
    * @param uri a NumUri to retrieve
+   * @param options a CompanyApiOptions object
    * @returns a Promise for a Record<string, unknown>
    */
-  lookupUri(uri: NumUri): Promise<Record<string, unknown>> {
+  lookupUri(uri: NumUri, options?: CompanyApiOptions): Promise<Record<string, unknown>> {
+    // We're going to modify the options to control recursion depths, so make a copy or set large default values.
+    const theOptions = options
+      ? new CompanyApiOptions(options.contactsDepth, options.imagesDepth)
+      : new CompanyApiOptions(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
-    return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>());
+    return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>(), theOptions);
   }
 
   /**
    * Lookup a domain name string.
    *
    * @param domain A domain name string
+   * @param options a CompanyApiOptions object
    * @return a Promise for a Record<string, unknown>
    */
-  lookupDomain(domain: string): Promise<Record<string, unknown>> {
-    return this.lookupUri(buildNumUri(domain));
+  lookupDomain(domain: string, options?: CompanyApiOptions): Promise<Record<string, unknown>> {
+    return this.lookupUri(buildNumUri(domain), options);
   }
 }
 
@@ -74,9 +96,14 @@ class CompanyApiImpl implements CompanyApi {
  * @param client the NumClient to use for lookups
  * @param lookup a Lookup object
  * @param usedUris a Map of NumUri's that have already been looked up - prevents infinite recursion
+ * @param options a CompanyApiOptions object
  * @returns a Promise of a Record<string, unknown>
  */
-const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromiseMap): Promise<Record<string, unknown>> => {
+const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromiseMap, optionsParam: CompanyApiOptions): Promise<Record<string, unknown>> => {
+  if (optionsParam.contactsDepth <= 0) {
+    return Promise.resolve({});
+  }
+  const options = new CompanyApiOptions(optionsParam.contactsDepth - 1, optionsParam.imagesDepth - 1);
   // Start a contacts record lookup if there isn't already one outstanding.
   const contactsUriString = JSON.stringify(lookup.contactsUri);
 
@@ -87,7 +114,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
     let imagesPromise;
     // Start an images record lookup if there isn't already one outstanding.
     const imagesUriString = JSON.stringify(lookup.imagesUri);
-    if (!usedUris.has(imagesUriString)) {
+    if (!usedUris.has(imagesUriString) && optionsParam.imagesDepth > 0) {
       imagesPromise = client.retrieveNumRecord(client.createContext(lookup.imagesUri));
       usedUris.set(imagesUriString, imagesPromise);
     }
@@ -107,7 +134,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
       }
 
       // Follow any `link` records
-      const subRecordsPromise = followLinks(client, usedUris, contactsObject, lookup.contactsUri);
+      const subRecordsPromise = followLinks(client, usedUris, contactsObject, lookup.contactsUri, options);
 
       // Handle the imags promise second since we need to include the images in the contacts object.
       if (imagesPromise) {
@@ -150,10 +177,16 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
  * @param currentUri the uri of the higher level NUM lookup - we need it as a base for links
  * @returns a Promise of a Record<string, unknown>
  */
-const followLinks = (client: NumClient, usedUris: UriToPromiseMap, jsonObj: Record<string, unknown>, currentUri: NumUri): Promise<Record<string, unknown>> => {
+const followLinks = (
+  client: NumClient,
+  usedUris: UriToPromiseMap,
+  jsonObj: Record<string, unknown>,
+  currentUri: NumUri,
+  optionsParam: CompanyApiOptions
+): Promise<Record<string, unknown>> => {
   const promises = findLinks(jsonObj, currentUri).map((l) => {
     const lookup = new Lookup(l.link, l.uri.withPort(MODULE_1), l.uri.withPort(MODULE_3));
-    return retrieveRecord(client, lookup, usedUris);
+    return retrieveRecord(client, lookup, usedUris, optionsParam);
   });
   return Promise.all(promises).then(() => {
     return jsonObj;
