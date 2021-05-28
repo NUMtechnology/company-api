@@ -128,7 +128,7 @@ class DummyNumClient implements NumClient {
 
     if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 1) {
       r =
-        '{"@n":1,"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John"}},{"link":{"@L":"sub-page-2","description":"Jane"}}]}}';
+        '{"@n":1,"@p":true,"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John"}},{"link":{"@L":"sub-page-2","description":"Jane"}}]}}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 3) {
       r = '{"@n":1,"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 1) {

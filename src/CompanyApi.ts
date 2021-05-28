@@ -123,6 +123,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
     return contactsPromise.then((contacts) => {
       const contactsObject: Record<string, unknown> = contacts !== null ? JSON.parse(contacts) : {};
       delete contactsObject['@n'];
+      delete contactsObject['@p'];
 
       let contactsSubObject: Record<string, unknown> | null = null;
 

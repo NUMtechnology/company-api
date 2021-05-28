@@ -20,8 +20,10 @@
   </div>
   <script>
 
+    const api = CompanyApi.createCompanyApi();
+
     function lookup(uri, options) {
-      return CompanyApi.api.lookupDomain(uri, options);
+      return api.lookupDomain(uri, options);
     }
 
     function reloadRecord() {
