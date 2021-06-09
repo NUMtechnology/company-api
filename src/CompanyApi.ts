@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { buildNumUri, createClient, MODULE_1, MODULE_3, NumClient, NumUri, parseNumUri, UrlPath } from 'num-client';
+import ContactsModuleHelper from './Contacts';
 //------------------------------------------------------------------------------------------------------------------------
 // Exports
 //------------------------------------------------------------------------------------------------------------------------
@@ -121,9 +122,10 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
 
     // When the contacts and images records are available...
     return contactsPromise.then((contacts) => {
-      const contactsObject: Record<string, unknown> = contacts !== null ? JSON.parse(contacts) : {};
-      delete contactsObject['@n'];
-      delete contactsObject['@p'];
+      const contactsObject: Record<string, unknown> =
+        contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: 'gb', _L: 'en' }, null) : {};
+      delete contactsObject['numVersion'];
+      delete contactsObject['populated'];
 
       let contactsSubObject: Record<string, unknown> | null = null;
 
@@ -212,7 +214,7 @@ const handleError = (reason: string): Promise<Record<string, unknown>> => {
 const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
   const links = new Array<Link>();
   for (const k in obj) {
-    if (k === 'link') {
+    if (k === 'link' && (obj[k] as Record<string, unknown>)['@L']) {
       const link = obj[k] as Record<string, unknown>;
       const path = link['@L'] as string;
       const newUri = path.startsWith('num://')

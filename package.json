@@ -1,11 +1,12 @@
 {
   "name": "company-api",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "A library to lookup NUM records recursively to produce an aggregated result.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "assert": "^2.0.0",
+    "libphonenumber-js": "^1.9.19",
     "modl-interpreter": "0.0.12",
     "num-client": "^0.1.24",
     "object-unpacker": "0.0.15",
