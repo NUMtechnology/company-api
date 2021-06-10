@@ -76,7 +76,9 @@ class CompanyApiImpl implements CompanyApi {
       : new CompanyApiOptions(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
 
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
-    return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>(), theOptions);
+    return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>(), theOptions).then((result): Record<string, unknown> => {
+      return result['numObject'] ? (result['numObject'] as Record<string, unknown>) : result;
+    });
   }
 
   /**
