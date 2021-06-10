@@ -188,7 +188,7 @@ export default class ContactsModuleHelper {
   static readyToDial(objects) {
     for (const object of objects) {
       const objectKey = Object.keys(object)[0];
-      const objectType = object[objectKey].object_type;
+      const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
       if (objectType === 'method' && (objectKey === 'telephone' || objectKey === 'sms')) {
         // if number starts with zero or has brackets or dashes then it's not in the correct format.
         // Assume that it's ready to dial for domestic users but send error
@@ -208,7 +208,7 @@ export default class ContactsModuleHelper {
   static addQueryToObjects(objects) {
     for (const object of objects) {
       const objectKey = Object.keys(object)[0];
-      const objectType = object[objectKey].object_type;
+      const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
 
       if (objectType === 'entity') {
         const objectName = object[objectKey].name.trim();
@@ -258,7 +258,7 @@ export default class ContactsModuleHelper {
           // Loop through the associated objects
           for (const contact of contacts) {
             const objectKey = Object.keys(contact).toString();
-            let objectType = contact[objectKey].object_type;
+            let objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
             if (!objectType) {
               objectType = 'link';
             }
@@ -280,7 +280,7 @@ export default class ContactsModuleHelper {
             // e.g. media.telephone
             if (!organisation[collectiveTerm][objectKey]) {
               // No, create it
-              const keysToIgnore = ContactsModuleHelper.getKeyData(dupeObject[objectKey].object_type, objectKey);
+              const keysToIgnore = ContactsModuleHelper.getKeyData('method', objectKey);
               // Ignore the object_type key too
               keysToIgnore.push('object_type');
               // Create the object, copying only the repetitive data, e.g. display name, prefix, etc
@@ -386,9 +386,8 @@ export default class ContactsModuleHelper {
   static expandTelephone(objects, key, userCountry) {
     for (const object of objects) {
       const objectKey = Object.keys(object)[0];
-      //const objectType = object[objectKey].object_type;
-      if (objectKey === key) {
-        // if (objectType === 'method' && objectKey === key) {
+      const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
+      if (objectType === 'method' && objectKey === key) {
         // Expand this number
         const telephoneNumber = object[objectKey].value;
 
@@ -776,5 +775,21 @@ export default class ContactsModuleHelper {
     const date = new Date(theDate);
     date.setDate(date.getDate() + days);
     return date;
+  }
+
+  static objectKeyToObjectType(objectKey) {
+    if (
+      objectKey === 'organisation' ||
+      objectKey === 'person' ||
+      objectKey === 'employee' ||
+      objectKey === 'group' ||
+      objectKey === 'department' ||
+      objectKey === 'locatiom'
+    ) {
+      return 'entity';
+    } else if (objectKey === 'link') {
+      return 'link';
+    }
+    return 'method';
   }
 }
