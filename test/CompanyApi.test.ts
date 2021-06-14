@@ -17,7 +17,7 @@ describe('Company API', () => {
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
-      '{"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John","numObject":{"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":{"original":"+123123","error":"Sms telephone number not in valid international format","display":"+123123","dial":"+123123"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}}],"method":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","method_type":"core","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"+123123","error":"Sms telephone number not in valid international format","display":"+123123","dial":"+123123"}}]}}},"images":[{"name":null,"type":"headshot","variants":[{"url":"1088937600.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}}},{"link":{"@L":"sub-page-2","description":"Jane","numObject":{"person":{"object_display_name":"Person","name":"Jane Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":{"original":"+456456456","error":"Sms telephone number not in valid international format","display":"+456456456","dial":"+456456456"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}}],"method":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","method_type":"core","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"+456456456","error":"Sms telephone number not in valid international format","display":"+456456456","dial":"+456456456"}}]}}}}}}],"link":{"link":{"@L":"sub-page-1","list":[{"description":"John","@L":"sub-page-1"},{"description":"Jane","@L":"sub-page-2"}]}}},"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}'
+      '{"object_type":"organization","object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John","numObject":{"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":{"original":"+123123","error":"Sms telephone number not in valid international format","display":"+123123","dial":"+123123"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}}],"method":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","method_type":"core","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"+123123","error":"Sms telephone number not in valid international format","display":"+123123","dial":"+123123"}}]}}},"images":[{"name":null,"type":"headshot","variants":[{"url":"1088937600.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}}},{"link":{"@L":"sub-page-2","description":"Jane","numObject":{"person":{"object_display_name":"Person","name":"Jane Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":{"original":"+456456456","error":"Sms telephone number not in valid international format","display":"+456456456","dial":"+456456456"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}}],"method":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","method_type":"core","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"+456456456","error":"Sms telephone number not in valid international format","display":"+456456456","dial":"+456456456"}}]}}}}}}],"link":{"link":{"@L":"sub-page-1","list":[{"description":"John","@L":"sub-page-1"},{"description":"Jane","@L":"sub-page-2"}]}},"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}'
     );
   });
 
@@ -128,35 +128,37 @@ class DummyNumClient implements NumClient {
 
     if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 1) {
       r =
-        '{"@n":1,"@p":true,"organisation":{"object_display_name":"Organisation","name":"dummy.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John"}},{"link":{"@L":"sub-page-2","description":"Jane"}}]}}';
+        '{"@n":1,"@p":true,"object_display_name":"Organisation","object_type":"organization","name":"dummy.com","slogan":null,"contacts":[{"method_type":"link","@L":"sub-page-1","description":"John"},{"method_type":"link","@L":"sub-page-2","description":"Jane"}]}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 3) {
       r = '{"@n":1,"images":[{"name":null,"type":"logo","variants":[{"url":"LX67y17q.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 1) {
       r =
-        '{"@n":1,"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":"123123","hours":null}}]}}';
+        '{"@n":1,"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"telephone","object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","value":"123123","hours":null}]}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 3) {
       r = '{"@n":1,"images":[{"name":null,"type":"headshot","variants":[{"url":"1088937600.jpg","mime":"image/jpg","width":1000,"height":1000}]}]}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/sub-page-2' && ctx.numAddress.port.n === 1) {
       r =
-        '{"@n":1,"person":{"object_display_name":"Person","name":"Jane Doe","bio":null,"contacts":[{"telephone":{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"core","value":"456456456","hours":null}}]}}';
+        '{"@n":1,"object_type":"person","object_display_name":"Person","name":"Jane Doe","bio":null,"contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":"456456456","hours":null}]}';
     } else if (ctx.numAddress.host.s === 'dummy.com' && ctx.numAddress.path.s === '/sub-page-2' && ctx.numAddress.port.n === 3) {
       r = null;
     } else if (ctx.numAddress.host.s === 'dummy-cyclic.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 1) {
       r =
-        '{"@n":1,"organisation":{"object_display_name":"Organisation","name":"dummy-cyclic.com","slogan":null,"contacts":[{"link":{"@L":"sub-page-1","description":"John"}}]}}';
+        '{"@n":1,"object_type":"organization","object_display_name":"Organisation","name":"dummy-cyclic.com","slogan":null,"contacts":[{"method_type":"link","@L":"sub-page-1","description":"John"}]}';
     } else if (ctx.numAddress.host.s === 'dummy-cyclic.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 3) {
       r = null;
     } else if (ctx.numAddress.host.s === 'dummy-cyclic.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 1) {
-      r = '{"@n":1,"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"link":{"@L":"/","description":"John"}}]}}';
+      r =
+        '{"@n":1,"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"link","@L":"/","description":"John"}]}';
     } else if (ctx.numAddress.host.s === 'dummy-cyclic.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 3) {
       r = null;
     } else if (ctx.numAddress.host.s === 'dummy-absolute.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 1) {
       r =
-        '{"@n":1,"organisation":{"object_display_name":"Organisation","name":"dummy-absolute.com","slogan":null,"contacts":[{"link":{"@L":"num://absolute-link.com:3/sub-page-1","description":"John"}}]}}';
+        '{"@n":1,"object_type":"organization","object_display_name":"Organisation","name":"dummy-absolute.com","slogan":null,"contacts":[{"method_type":"link","@L":"num://absolute-link.com:3/sub-page-1","description":"John"}]}';
     } else if (ctx.numAddress.host.s === 'dummy-absolute.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 3) {
       r = null;
     } else if (ctx.numAddress.host.s === 'absolute-link.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 1) {
-      r = '{"@n":1,"person":{"object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"link":{"@L":"/","description":"John"}}]}}';
+      r =
+        '{"@n":1,"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"link","@L":"/","description":"John"}]}';
     } else if (ctx.numAddress.host.s === 'absolute-link.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 3) {
       r = null;
     } else {

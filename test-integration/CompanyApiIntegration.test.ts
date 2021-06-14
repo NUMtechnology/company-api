@@ -1,10 +1,16 @@
 import { expect } from 'chai';
-import { buildNumUri } from 'num-client';
+import { buildNumUri, createClient } from 'num-client';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
+import { DummyResourceLoader } from './DummyResourceLoader';
+
+const dummyResourceLoader = new DummyResourceLoader();
+dummyResourceLoader.setenv('no effect');
 
 describe('Company API Integration Tests', () => {
   it('Can lookup a NUM URI using a CompanyApi instance with depth of 0', async () => {
-    const api = createCompanyApi();
+    const client = createClient();
+    client.setResourceLoader(dummyResourceLoader);
+    const api = createCompanyApi(client);
 
     const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(0, 0));
     expect(result).not.null;
@@ -13,7 +19,9 @@ describe('Company API Integration Tests', () => {
   });
 
   it('Can lookup a NUM URI using a CompanyApi instance with contacts depth of 1, images depth of 0', async () => {
-    const api = createCompanyApi();
+    const client = createClient();
+    client.setResourceLoader(dummyResourceLoader);
+    const api = createCompanyApi(client);
 
     const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(1, 0));
     expect(result).not.null;
@@ -24,7 +32,9 @@ describe('Company API Integration Tests', () => {
   });
 
   it('Can lookup a NUM URI using a CompanyApi instance with contacts depth of 2, images depth of 0', async () => {
-    const api = createCompanyApi();
+    const client = createClient();
+    client.setResourceLoader(dummyResourceLoader);
+    const api = createCompanyApi(client);
 
     const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(2, 0));
     expect(result).not.null;

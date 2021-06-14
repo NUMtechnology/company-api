@@ -129,12 +129,9 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
       delete contactsObject['numVersion'];
       delete contactsObject['populated'];
 
-      let contactsSubObject: Record<string, unknown> | null = null;
-
       // There should only be one key left after deleting the `@n` key...
       for (const k in contactsObject) {
         lookup.link[k] = contactsObject[k];
-        contactsSubObject = contactsObject[k] as Record<string, unknown>;
         break; // The first item _should_ be the right one
       }
 
@@ -147,12 +144,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
           if (images !== null) {
             const imagesObject = JSON.parse(images).images;
 
-            if (contactsSubObject !== null) {
-              contactsSubObject.images = imagesObject;
-            } else {
-              // Fallback is to set the images on the link itself.
-              lookup.link.images = imagesObject;
-            }
+            (contactsObject['numObject'] as Record<string, unknown>).images = imagesObject;
           }
           return Promise.all([imagesPromise, subRecordsPromise]).then(() => {
             return subRecordsPromise;
@@ -216,8 +208,8 @@ const handleError = (reason: string): Promise<Record<string, unknown>> => {
 const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
   const links = new Array<Link>();
   for (const k in obj) {
-    if (k === 'link' && (obj[k] as Record<string, unknown>)['@L']) {
-      const link = obj[k] as Record<string, unknown>;
+    if (k === 'method_type' && obj[k] === 'link' && obj['@L']) {
+      const link = obj;
       const path = link['@L'] as string;
       const newUri = path.startsWith('num://')
         ? parseNumUri(path)

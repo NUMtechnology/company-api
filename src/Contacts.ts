@@ -45,13 +45,13 @@ export default class ContactsModuleHelper {
 
     const keys = Object.keys(numRecord);
     for (const objectKey of keys) {
-      if (numRecord[objectKey].contacts) {
+      if (objectKey === 'contacts' && numRecord.contacts) {
         let daysWithHours;
 
         // All associated entity objects must have a query, this function ensures they do
-        ContactsModuleHelper.addQueryToObjects(numRecord[objectKey].contacts);
+        ContactsModuleHelper.addQueryToObjects(numRecord.contacts);
         // Get telephone numbers ready to dial
-        ContactsModuleHelper.readyToDial(numRecord[objectKey].contacts);
+        ContactsModuleHelper.readyToDial(numRecord.contacts);
 
         // Does the client want us to expand the hours object? This makes it easier for developers
         // to work with and can show opening hours for a specified number of days.
@@ -69,11 +69,11 @@ export default class ContactsModuleHelper {
           // Does the client want us to expand the telephone number object? This helps to display telephone
           // numbers in the format that users will be familiar with and also display the country of any international numbers
           if (options.expandTelephone) {
-            ContactsModuleHelper.expandTelephone(numRecord[objectKey].contacts, 'telephone', userVariables['_C']);
+            ContactsModuleHelper.expandTelephone(numRecord.contacts, 'telephone', userVariables['_C']);
           }
 
           if (options.expandSms) {
-            ContactsModuleHelper.expandTelephone(numRecord[objectKey].contacts, 'sms', userVariables['_C']);
+            ContactsModuleHelper.expandTelephone(numRecord.contacts, 'sms', userVariables['_C']);
           }
         }
 
@@ -246,66 +246,63 @@ export default class ContactsModuleHelper {
    */
   static expandObjects(numObject) {
     // We need the object key to find out what type of object this is
-    const keys = Object.keys(numObject);
 
-    for (const key of keys) {
-      if (numObject[key] && numObject[key].contacts) {
-        const organisation = numObject[key];
+    if (numObject && numObject.contacts) {
+      const organisation = numObject;
 
-        // Does this object have associated objects?
-        if (organisation.contacts) {
-          const contacts = organisation.contacts;
-          // Loop through the associated objects
-          for (const contact of contacts) {
-            const objectKey = Object.keys(contact).toString();
-            let objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
-            if (!objectType) {
-              objectType = 'link';
-            }
-            const collectiveTerm = ContactsModuleHelper.getPlural(objectType);
+      // Does this object have associated objects?
+      if (organisation.contacts) {
+        const contacts = organisation.contacts;
+        // Loop through the associated objects
+        for (const contact of contacts) {
+          const objectKey = contact.method_type;
+          let objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
+          if (!objectType) {
+            objectType = 'link';
+          }
+          const collectiveTerm = ContactsModuleHelper.getPlural(objectType);
 
-            // Add an image for for each
-            this.addImage(contact[objectKey], objectType, objectKey);
+          // Add an image for for each
+          this.addImage(contact, objectType, objectKey);
 
-            // Duplicate the object
-            const dupeObject = JSON.parse(JSON.stringify(contact));
-            // Entities must have a query value, so if they don't have one then derive it from the name
+          // Duplicate the object
+          const dupeObject = JSON.parse(JSON.stringify(contact));
+          // Entities must have a query value, so if they don't have one then derive it from the name
 
-            // Do we already have an object with a key of the collective name, e.g. "media"?
-            if (!organisation[collectiveTerm]) {
-              // No, create one
-              organisation[collectiveTerm] = {};
-            }
-            // Do we already have an object containing this object type within the object found/created above?
-            // e.g. media.telephone
-            if (!organisation[collectiveTerm][objectKey]) {
-              // No, create it
-              const keysToIgnore = ContactsModuleHelper.getKeyData('method', objectKey);
-              // Ignore the object_type key too
-              keysToIgnore.push('object_type');
-              // Create the object, copying only the repetitive data, e.g. display name, prefix, etc
-              organisation[collectiveTerm][objectKey] = ContactsModuleHelper.copyObjectParts(dupeObject[objectKey], keysToIgnore);
-            }
-            // What's the key data for this object - e.g. description, value, hours
-            // Metadata that's unique for each object?
-            const keyData = ContactsModuleHelper.getKeyData(objectType, objectKey);
-            // Do we already have a list of values for this object type?
-            // e.g. media.telephone.list
-            if (!organisation[collectiveTerm][objectKey].list) {
-              // Not, create one
-              organisation[collectiveTerm][objectKey].list = [];
-            }
-            // Add an empty object to the list
-            const thisObject = {};
-            organisation[collectiveTerm][objectKey].list.push(thisObject);
+          // Do we already have an object with a key of the collective name, e.g. "media"?
+          if (!organisation[collectiveTerm]) {
+            // No, create one
+            organisation[collectiveTerm] = {};
+          }
+          // Do we already have an object containing this object type within the object found/created above?
+          // e.g. media.telephone
+          if (!organisation[collectiveTerm][objectKey]) {
+            // No, create it
+            const keysToIgnore = ContactsModuleHelper.getKeyData('method', objectKey);
+            // Ignore the object_type key too
+            keysToIgnore.push('object_type');
+            // Create the object, copying only the repetitive data, e.g. display name, prefix, etc
+            organisation[collectiveTerm][objectKey] = ContactsModuleHelper.copyObjectParts(dupeObject, keysToIgnore);
+          }
+          // What's the key data for this object - e.g. description, value, hours
+          // Metadata that's unique for each object?
+          const keyData = ContactsModuleHelper.getKeyData(objectType, objectKey);
+          // Do we already have a list of values for this object type?
+          // e.g. media.telephone.list
+          if (!organisation[collectiveTerm][objectKey].list) {
+            // Not, create one
+            organisation[collectiveTerm][objectKey].list = [];
+          }
+          // Add an empty object to the list
+          const thisObject = {};
+          organisation[collectiveTerm][objectKey].list.push(thisObject);
 
-            // Loop through the key data for this object
-            for (const ky of keyData) {
-              // Get the key field name
-              if (dupeObject[objectKey][ky]) {
-                // Add the keydata to the object
-                thisObject[ky] = dupeObject[objectKey][ky];
-              }
+          // Loop through the key data for this object
+          for (const ky of keyData) {
+            // Get the key field name
+            if (dupeObject[ky]) {
+              // Add the keydata to the object
+              thisObject[ky] = dupeObject[ky];
             }
           }
         }
@@ -786,7 +783,7 @@ export default class ContactsModuleHelper {
       objectKey === 'employee' ||
       objectKey === 'group' ||
       objectKey === 'department' ||
-      objectKey === 'locatiom'
+      objectKey === 'location'
     ) {
       return 'entity';
     } else if (objectKey === 'link') {
