@@ -382,22 +382,21 @@ export default class ContactsModuleHelper {
 
   static expandTelephone(objects, key, userCountry) {
     for (const object of objects) {
-      const objectKey = Object.keys(object)[0];
-      const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
-      if (objectType === 'method' && objectKey === key) {
+      const objectKey = object['method_type'];
+      if (objectKey === key) {
         // Expand this number
-        const telephoneNumber = object[objectKey].value;
+        const telephoneNumber = object.value;
 
-        object[objectKey].value = { original: telephoneNumber };
+        object.value = { original: telephoneNumber };
         const parsedNumber = parseNumber(telephoneNumber);
 
         if (ContactsModuleHelper.isEmptyObject(parsedNumber)) {
-          object[objectKey].value.error = 'Sms telephone number not in valid international format';
-          object[objectKey].value.display = telephoneNumber;
-          object[objectKey].value.dial = telephoneNumber;
+          object.value.error = 'Sms telephone number not in valid international format';
+          object.value.display = telephoneNumber;
+          object.value.dial = telephoneNumber;
         } else {
           const telephoneCountry = parsedNumber['country'];
-          object[objectKey].value.country = telephoneCountry;
+          object.value.country = telephoneCountry;
 
           if (telephoneCountry.toLowerCase() === userCountry.toLowerCase()) {
             // display local format
@@ -406,14 +405,14 @@ export default class ContactsModuleHelper {
             const nationalPrefix = country[5];
 
             if (telephoneNumber.startsWith(internationalPrefix)) {
-              object[objectKey].value.display = telephoneNumber.replace(internationalPrefix, nationalPrefix);
+              object.value.display = telephoneNumber.replace(internationalPrefix, nationalPrefix);
             }
 
-            object[objectKey].value.dial = telephoneNumber;
+            object.value.dial = telephoneNumber;
           } else {
             // display international format
-            object[objectKey].value.display = telephoneNumber;
-            object[objectKey].value.dial = telephoneNumber;
+            object.value.display = telephoneNumber;
+            object.value.dial = telephoneNumber;
           }
         }
       }
@@ -424,71 +423,67 @@ export default class ContactsModuleHelper {
    * Used to expand the hours object into a more developer friendly object
    */
   static expandHours(recordObject, daysWithHours) {
-    const keys = Object.keys(recordObject);
+    // Find all of the hours objects
+    const hourSettings = ContactsModuleHelper.getObjects(recordObject, 'hours', 'obj');
 
-    for (const objectKey of keys) {
-      // Find all of the hours objects
-      const hourSettings = ContactsModuleHelper.getObjects(recordObject[objectKey], 'hours', 'obj');
-
-      // Loop through each of the hours objects
-      for (const setting of hourSettings) {
-        if (setting.hours) {
-          let hoursArray = setting.hours.available;
-          if (hoursArray === undefined) {
-            hoursArray = [];
-          }
-          const timeZoneCity = setting.hours.time_zone_location;
-          logger.debug(`Time zone city: ${timeZoneCity}`);
-
-          // Put the original string in the hours object
-          const hoursObject = { original: hoursArray };
-          // Create an array of days, displaying the amount defined in client settings
-          hoursObject['days'] = ContactsModuleHelper.displayDays(daysWithHours);
-          // Select the empty days array
-          const daysObject = hoursObject['days'];
-
-          // Loop through the hours settings
-          for (const hoursItem of hoursArray) {
-            // Split the hours by the @ sign, hours must be in the form:
-            // day-descriptor@time-descriptor@time-zone-city
-            // time-zone-city can be omitted if there"s a timezone in the parent object
-            const hourPartsArray = hoursItem.split('@');
-
-            let dayDescriptor, timeDescriptor;
-
-            // If the parent object has a timezone and the hours object doesn"t
-            if (hourPartsArray.length === 2) {
-              // Build the hours object based on the day and time descriptor based on the parent time zone
-              dayDescriptor = hourPartsArray[0];
-              timeDescriptor = hourPartsArray[1];
-            } else {
-              // Invalid hours object
-              hoursObject['error'] = 'Invalid hours object';
-            }
-
-            // Loop through the amount of days to show with hours (daysWithHours)
-            for (let x = 0; x < daysWithHours; x++) {
-              // Does the day descriptor for this hours object match this day?
-              if (ContactsModuleHelper.checkDayDescriptor(dayDescriptor, daysObject[x].date)) {
-                // Yes, set the times that this object is available
-                daysObject[x].available = ContactsModuleHelper.setTimes(timeDescriptor);
-              } else {
-                // No, do nothing
-              }
-            }
-          }
-          // Is this object available now?
-          if (ContactsModuleHelper.availableNow(daysObject[0].available)) {
-            // Yes
-            hoursObject['available_now'] = true;
-          } else {
-            // No
-            hoursObject['available_now'] = false;
-          }
-
-          // Set the hours of this object to the object created in the code above
-          setting.hours = hoursObject;
+    // Loop through each of the hours objects
+    for (const setting of hourSettings) {
+      if (setting.hours) {
+        let hoursArray = setting.hours.available;
+        if (hoursArray === undefined) {
+          hoursArray = [];
         }
+        const timeZoneCity = setting.hours.time_zone_location;
+        logger.debug(`Time zone city: ${timeZoneCity}`);
+
+        // Put the original string in the hours object
+        const hoursObject = { original: hoursArray };
+        // Create an array of days, displaying the amount defined in client settings
+        hoursObject['days'] = ContactsModuleHelper.displayDays(daysWithHours);
+        // Select the empty days array
+        const daysObject = hoursObject['days'];
+
+        // Loop through the hours settings
+        for (const hoursItem of hoursArray) {
+          // Split the hours by the @ sign, hours must be in the form:
+          // day-descriptor@time-descriptor@time-zone-city
+          // time-zone-city can be omitted if there"s a timezone in the parent object
+          const hourPartsArray = hoursItem.split('@');
+
+          let dayDescriptor, timeDescriptor;
+
+          // If the parent object has a timezone and the hours object doesn"t
+          if (hourPartsArray.length === 2) {
+            // Build the hours object based on the day and time descriptor based on the parent time zone
+            dayDescriptor = hourPartsArray[0];
+            timeDescriptor = hourPartsArray[1];
+          } else {
+            // Invalid hours object
+            hoursObject['error'] = 'Invalid hours object';
+          }
+
+          // Loop through the amount of days to show with hours (daysWithHours)
+          for (let x = 0; x < daysWithHours; x++) {
+            // Does the day descriptor for this hours object match this day?
+            if (ContactsModuleHelper.checkDayDescriptor(dayDescriptor, daysObject[x].date)) {
+              // Yes, set the times that this object is available
+              daysObject[x].available = ContactsModuleHelper.setTimes(timeDescriptor);
+            } else {
+              // No, do nothing
+            }
+          }
+        }
+        // Is this object available now?
+        if (ContactsModuleHelper.availableNow(daysObject[0].available)) {
+          // Yes
+          hoursObject['available_now'] = true;
+        } else {
+          // No
+          hoursObject['available_now'] = false;
+        }
+
+        // Set the hours of this object to the object created in the code above
+        setting.hours = hoursObject;
       }
     }
   }
