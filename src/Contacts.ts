@@ -114,7 +114,7 @@ export default class ContactsModuleHelper {
   // when expanding the object.
   static getKeyData(objectType, objectKey) {
     // Any object can have an introduction, hours and a query
-    const keyData = ['introduction', 'hours', 'query'];
+    const keyData = ['introduction', 'hours', 'query', 'action'];
     if (objectType === 'entity') {
       // All entities also have a name and associated objects
       keyData.push('name', 'objects');
@@ -135,7 +135,7 @@ export default class ContactsModuleHelper {
         // The rest have a description
         keyData.push('description');
       }
-    } else if (objectType === 'method') {
+    } else if (objectType === 'method' && objectKey !== 'link') {
       // Media have a description, value and accessibility
       keyData.push('description', 'value', 'accessibility');
     } else {
@@ -256,10 +256,8 @@ export default class ContactsModuleHelper {
         // Loop through the associated objects
         for (const contact of contacts) {
           const objectKey = contact.method_type;
-          let objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
-          if (!objectType) {
-            objectType = 'link';
-          }
+          const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
+
           const collectiveTerm = ContactsModuleHelper.getPlural(objectType);
 
           // Add an image for for each
@@ -278,9 +276,10 @@ export default class ContactsModuleHelper {
           // e.g. media.telephone
           if (!organisation[collectiveTerm][objectKey]) {
             // No, create it
-            const keysToIgnore = ContactsModuleHelper.getKeyData('method', objectKey);
+            const keysToIgnore = ContactsModuleHelper.getKeyData(objectType, objectKey);
             // Ignore the object_type key too
-            keysToIgnore.push('object_type');
+            keysToIgnore.push('method_type');
+            keysToIgnore.push('action');
             // Create the object, copying only the repetitive data, e.g. display name, prefix, etc
             organisation[collectiveTerm][objectKey] = ContactsModuleHelper.copyObjectParts(dupeObject, keysToIgnore);
           }
@@ -319,6 +318,9 @@ export default class ContactsModuleHelper {
     let plural = singular;
     if (singular === 'entity') {
       plural = 'entities';
+    }
+    if (singular === 'method') {
+      plural = 'methods';
     }
 
     return plural;
@@ -781,8 +783,6 @@ export default class ContactsModuleHelper {
       objectKey === 'location'
     ) {
       return 'entity';
-    } else if (objectKey === 'link') {
-      return 'link';
     }
     return 'method';
   }
