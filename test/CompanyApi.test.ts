@@ -186,6 +186,12 @@ class DummyNumClient implements NumClient {
   setenv(env: string): void {
     this.env = env;
   }
+  setDnsEnv(env: string): void {
+    this.env = env;
+  }
+  setModuleEnv(env: string): void {
+    this.env = env;
+  }
 }
 
 class DummyContext implements Context {

@@ -1,6 +1,6 @@
 {
   "name": "company-api",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A library to lookup NUM records recursively to produce an aggregated result.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
     "assert": "^2.0.0",
     "libphonenumber-js": "^1.9.19",
     "modl-interpreter": "0.0.13",
-    "num-client": "^0.1.27",
+    "num-client": "^0.1.28",
     "object-unpacker": "0.0.17",
     "url": "^0.11.0",
     "util": "^0.12.3"
@@ -21,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "chai": "^4.2.0",
+    "deep-eql": "^4.0.0",
     "eslint": "^7.25.0",
     "mocha": "^8.1.3",
     "prettier": "^2.3.0",
