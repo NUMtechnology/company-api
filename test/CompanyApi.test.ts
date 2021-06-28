@@ -120,6 +120,11 @@ class DummyNumClient implements NumClient {
     this.env = 'test';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setTimeoutMillis(_t: number): void {
+    throw new Error('Method not implemented.');
+  }
+
   createContext(numAddress: NumUri): Context {
     return new DummyContext(numAddress);
   }
