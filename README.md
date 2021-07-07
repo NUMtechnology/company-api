@@ -16,7 +16,7 @@ An API for aggregating NUM Contacts Module and Images Module Records into a sing
 ## Simple Application Usage
 
 ```typescript
-import { createCompanyApi } from './CompanyApi';
+import { createCompanyApi } from 'company-api';
 
 // Create an API instance
 const api = createCompanyApi();
@@ -30,7 +30,7 @@ api.lookupDomain('numexample.com').then((result) => {
 ## Controlling the Recursion Levels
 
 ```typescript
-import { createCompanyApi, CompanyApiOptions } from './CompanyApi';
+import { createCompanyApi, CompanyApiOptions } from 'company-api';
 
 // Create an API instance
 const api = createCompanyApi();
@@ -51,7 +51,7 @@ api.lookupDomain('numexample.com', options).then((result) => {
 If you already have a NUMClient object you can re-use it.
 ```typescript
 import { createClient } from 'num-client';
-import { createCompanyApi } from './CompanyApi';
+import { createCompanyApi } from 'company-api';
 
 // (from another part of your application)
 const existingClient = createClient();
