@@ -176,7 +176,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services and cancellations',
                 action: 'tel:+44330 024 1158',
-                value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+44330 024 1158' },
+                value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+443300241158' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -199,7 +199,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services and cancellations (Northern Ireland)',
                 action: 'tel:+44289 002 0104',
-                value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+44289 002 0104' },
+                value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+442890020104' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-16'],
@@ -222,7 +222,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Get a quote for a new policy',
                 action: 'tel:+44333 241 3545',
-                value: { original: '+44333 241 3545', country: 'GB', display: '0333 241 3545', dial: '+44333 241 3545' },
+                value: { original: '+44333 241 3545', country: 'GB', display: '0333 241 3545', dial: '+443332413545' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -245,7 +245,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Manage your No Claims Discount',
                 action: 'tel:+44330 024 1157',
-                value: { original: '+44330 024 1157', country: 'GB', display: '0330 024 1157', dial: '+44330 024 1157' },
+                value: { original: '+44330 024 1157', country: 'GB', display: '0330 024 1157', dial: '+443300241157' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -268,7 +268,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Manage your payments',
                 action: 'tel:+44330 024 1229',
-                value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+44330 024 1229' },
+                value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+443300241229' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -291,7 +291,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Make a car insurance claim',
                 action: 'tel:+44330 024 1305',
-                value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+44330 024 1305' },
+                value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+443300241305' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18', '6@9-17'],
@@ -314,7 +314,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Make a car insurance claim from abroad',
                 action: 'tel:+44121 752 0685',
-                value: { original: '+44121 752 0685', country: 'GB', display: '0121 752 0685', dial: '+44121 752 0685' },
+                value: { original: '+44121 752 0685', country: 'GB', display: '0121 752 0685', dial: '+441217520685' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18', '6@9-17'],
@@ -337,7 +337,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Windscreen repair',
                 action: 'tel:+44330 024 1306',
-                value: { original: '+44330 024 1306', country: 'GB', display: '0330 024 1306', dial: '+44330 024 1306' },
+                value: { original: '+44330 024 1306', country: 'GB', display: '0330 024 1306', dial: '+443300241306' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -348,7 +348,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Breakdown assistance UK',
                 action: 'tel:+44800 197 1121',
-                value: { original: '+44800 197 1121', country: 'GB', display: '0800 197 1121', dial: '+44800 197 1121' },
+                value: { original: '+44800 197 1121', country: 'GB', display: '0800 197 1121', dial: '+448001971121' },
                 controller: null,
                 hours: {
                   original: ['d@0-24'],
@@ -371,7 +371,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Breakdown assistance Europe',
                 action: 'tel:+44 173 781 5375',
-                value: { original: '+44 173 781 5375', country: 'GB', display: '0 173 781 5375', dial: '+44 173 781 5375' },
+                value: { original: '+44 173 781 5375', country: 'GB', display: '0 173 781 5375', dial: '+441737815375' },
                 controller: null,
                 hours: {
                   original: ['d@0-24'],
@@ -394,7 +394,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'General complaints',
                 action: 'tel:+44330 024 1158',
-                value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+44330 024 1158' },
+                value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+443300241158' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -417,7 +417,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claims complaints',
                 action: 'tel:+44330 024 1305',
-                value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+44330 024 1305' },
+                value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+443300241305' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20'],
@@ -480,7 +480,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1158',
                     description: 'Customer services and cancellations',
-                    value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+44330 024 1158' },
+                    value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+443300241158' },
                   },
                   {
                     hours: {
@@ -498,7 +498,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44289 002 0104',
                     description: 'Customer services and cancellations (Northern Ireland)',
-                    value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+44289 002 0104' },
+                    value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+442890020104' },
                   },
                   {
                     hours: {
@@ -516,7 +516,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44333 241 3545',
                     description: 'Get a quote for a new policy',
-                    value: { original: '+44333 241 3545', country: 'GB', display: '0333 241 3545', dial: '+44333 241 3545' },
+                    value: { original: '+44333 241 3545', country: 'GB', display: '0333 241 3545', dial: '+443332413545' },
                   },
                   {
                     hours: {
@@ -534,7 +534,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1157',
                     description: 'Manage your No Claims Discount',
-                    value: { original: '+44330 024 1157', country: 'GB', display: '0330 024 1157', dial: '+44330 024 1157' },
+                    value: { original: '+44330 024 1157', country: 'GB', display: '0330 024 1157', dial: '+443300241157' },
                   },
                   {
                     hours: {
@@ -552,7 +552,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1229',
                     description: 'Manage your payments',
-                    value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+44330 024 1229' },
+                    value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+443300241229' },
                   },
                   {
                     hours: {
@@ -570,7 +570,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1305',
                     description: 'Make a car insurance claim',
-                    value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+44330 024 1305' },
+                    value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+443300241305' },
                   },
                   {
                     hours: {
@@ -588,12 +588,12 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44121 752 0685',
                     description: 'Make a car insurance claim from abroad',
-                    value: { original: '+44121 752 0685', country: 'GB', display: '0121 752 0685', dial: '+44121 752 0685' },
+                    value: { original: '+44121 752 0685', country: 'GB', display: '0121 752 0685', dial: '+441217520685' },
                   },
                   {
                     action: 'tel:+44330 024 1306',
                     description: 'Windscreen repair',
-                    value: { original: '+44330 024 1306', country: 'GB', display: '0330 024 1306', dial: '+44330 024 1306' },
+                    value: { original: '+44330 024 1306', country: 'GB', display: '0330 024 1306', dial: '+443300241306' },
                   },
                   {
                     hours: {
@@ -611,7 +611,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 197 1121',
                     description: 'Breakdown assistance UK',
-                    value: { original: '+44800 197 1121', country: 'GB', display: '0800 197 1121', dial: '+44800 197 1121' },
+                    value: { original: '+44800 197 1121', country: 'GB', display: '0800 197 1121', dial: '+448001971121' },
                   },
                   {
                     hours: {
@@ -629,7 +629,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44 173 781 5375',
                     description: 'Breakdown assistance Europe',
-                    value: { original: '+44 173 781 5375', country: 'GB', display: '0 173 781 5375', dial: '+44 173 781 5375' },
+                    value: { original: '+44 173 781 5375', country: 'GB', display: '0 173 781 5375', dial: '+441737815375' },
                   },
                   {
                     hours: {
@@ -647,7 +647,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1158',
                     description: 'General complaints',
-                    value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+44330 024 1158' },
+                    value: { original: '+44330 024 1158', country: 'GB', display: '0330 024 1158', dial: '+443300241158' },
                   },
                   {
                     hours: {
@@ -665,7 +665,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1305',
                     description: 'Claims complaints',
-                    value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+44330 024 1305' },
+                    value: { original: '+44330 024 1305', country: 'GB', display: '0330 024 1305', dial: '+443300241305' },
                   },
                 ],
               },
@@ -701,7 +701,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services and cancellations',
                 action: 'tel:+44330 024 1235',
-                value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+44330 024 1235' },
+                value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+443300241235' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -724,7 +724,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services and cancellations (Northern Ireland)',
                 action: 'tel:+44289 002 0104',
-                value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+44289 002 0104' },
+                value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+442890020104' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-16'],
@@ -747,7 +747,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Quotes',
                 action: 'tel:+44330 058 4118',
-                value: { original: '+44330 058 4118', country: 'GB', display: '0330 058 4118', dial: '+44330 058 4118' },
+                value: { original: '+44330 058 4118', country: 'GB', display: '0330 058 4118', dial: '+443300584118' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -770,7 +770,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Manage your payments',
                 action: 'tel:+44330 024 1239',
-                value: { original: '+44330 024 1239', country: 'GB', display: '0330 024 1239', dial: '+44330 024 1239' },
+                value: { original: '+44330 024 1239', country: 'GB', display: '0330 024 1239', dial: '+443300241239' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -793,7 +793,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Make a home insurance claim',
                 action: 'tel:+44330 024 8086',
-                value: { original: '+44330 024 8086', country: 'GB', display: '0330 024 8086', dial: '+44330 024 8086' },
+                value: { original: '+44330 024 8086', country: 'GB', display: '0330 024 8086', dial: '+443300248086' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -816,7 +816,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Home assistance claim',
                 action: 'tel:+44330 024 1259',
-                value: { original: '+44330 024 1259', country: 'GB', display: '0330 024 1259', dial: '+44330 024 1259' },
+                value: { original: '+44330 024 1259', country: 'GB', display: '0330 024 1259', dial: '+443300241259' },
                 controller: null,
                 hours: {
                   original: ['d@0-24'],
@@ -839,7 +839,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Legal advice and expenses claim',
                 action: 'tel:+44330 024 1278',
-                value: { original: '+44330 024 1278', country: 'GB', display: '0330 024 1278', dial: '+44330 024 1278' },
+                value: { original: '+44330 024 1278', country: 'GB', display: '0330 024 1278', dial: '+443300241278' },
                 controller: null,
                 hours: {
                   original: ['d@0-24'],
@@ -862,7 +862,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Policy complaints',
                 action: 'tel:+44330 024 1235',
-                value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+44330 024 1235' },
+                value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+443300241235' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-15'],
@@ -885,7 +885,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claims complaints',
                 action: 'tel:+44330 024 1277',
-                value: { original: '+44330 024 1277', country: 'GB', display: '0330 024 1277', dial: '+44330 024 1277' },
+                value: { original: '+44330 024 1277', country: 'GB', display: '0330 024 1277', dial: '+443300241277' },
                 controller: null,
                 hours: {
                   original: ['wd@9-17'],
@@ -908,7 +908,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Legal expenses complaints',
                 action: 'tel:+44120 661 5000',
-                value: { original: '+44120 661 5000', country: 'GB', display: '0120 661 5000', dial: '+44120 661 5000' },
+                value: { original: '+44120 661 5000', country: 'GB', display: '0120 661 5000', dial: '+441206615000' },
                 controller: null,
                 hours: {
                   original: ['wd@9-17.30'],
@@ -964,7 +964,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1235',
                     description: 'Customer services and cancellations',
-                    value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+44330 024 1235' },
+                    value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+443300241235' },
                   },
                   {
                     hours: {
@@ -982,7 +982,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44289 002 0104',
                     description: 'Customer services and cancellations (Northern Ireland)',
-                    value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+44289 002 0104' },
+                    value: { original: '+44289 002 0104', country: 'GB', display: '0289 002 0104', dial: '+442890020104' },
                   },
                   {
                     hours: {
@@ -1000,7 +1000,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 058 4118',
                     description: 'Quotes',
-                    value: { original: '+44330 058 4118', country: 'GB', display: '0330 058 4118', dial: '+44330 058 4118' },
+                    value: { original: '+44330 058 4118', country: 'GB', display: '0330 058 4118', dial: '+443300584118' },
                   },
                   {
                     hours: {
@@ -1018,7 +1018,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1239',
                     description: 'Manage your payments',
-                    value: { original: '+44330 024 1239', country: 'GB', display: '0330 024 1239', dial: '+44330 024 1239' },
+                    value: { original: '+44330 024 1239', country: 'GB', display: '0330 024 1239', dial: '+443300241239' },
                   },
                   {
                     hours: {
@@ -1036,7 +1036,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 8086',
                     description: 'Make a home insurance claim',
-                    value: { original: '+44330 024 8086', country: 'GB', display: '0330 024 8086', dial: '+44330 024 8086' },
+                    value: { original: '+44330 024 8086', country: 'GB', display: '0330 024 8086', dial: '+443300248086' },
                   },
                   {
                     hours: {
@@ -1054,7 +1054,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1259',
                     description: 'Home assistance claim',
-                    value: { original: '+44330 024 1259', country: 'GB', display: '0330 024 1259', dial: '+44330 024 1259' },
+                    value: { original: '+44330 024 1259', country: 'GB', display: '0330 024 1259', dial: '+443300241259' },
                   },
                   {
                     hours: {
@@ -1072,7 +1072,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1278',
                     description: 'Legal advice and expenses claim',
-                    value: { original: '+44330 024 1278', country: 'GB', display: '0330 024 1278', dial: '+44330 024 1278' },
+                    value: { original: '+44330 024 1278', country: 'GB', display: '0330 024 1278', dial: '+443300241278' },
                   },
                   {
                     hours: {
@@ -1090,7 +1090,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1235',
                     description: 'Policy complaints',
-                    value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+44330 024 1235' },
+                    value: { original: '+44330 024 1235', country: 'GB', display: '0330 024 1235', dial: '+443300241235' },
                   },
                   {
                     hours: {
@@ -1108,7 +1108,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1277',
                     description: 'Claims complaints',
-                    value: { original: '+44330 024 1277', country: 'GB', display: '0330 024 1277', dial: '+44330 024 1277' },
+                    value: { original: '+44330 024 1277', country: 'GB', display: '0330 024 1277', dial: '+443300241277' },
                   },
                   {
                     hours: {
@@ -1126,7 +1126,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44120 661 5000',
                     description: 'Legal expenses complaints',
-                    value: { original: '+44120 661 5000', country: 'GB', display: '0120 661 5000', dial: '+44120 661 5000' },
+                    value: { original: '+44120 661 5000', country: 'GB', display: '0120 661 5000', dial: '+441206615000' },
                   },
                 ],
               },
@@ -1162,7 +1162,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services and cancellations',
                 action: 'tel:+44330 024 1307',
-                value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+44330 024 1307' },
+                value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+443300241307' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-16'],
@@ -1185,7 +1185,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Manage your payments',
                 action: 'tel:+44330 024 1229',
-                value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+44330 024 1229' },
+                value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+443300241229' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -1208,7 +1208,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Emergency medical/ repatriation',
                 action: 'tel:+44173 781 5626',
-                value: { original: '+44173 781 5626', country: 'GB', display: '0173 781 5626', dial: '+44173 781 5626' },
+                value: { original: '+44173 781 5626', country: 'GB', display: '0173 781 5626', dial: '+441737815626' },
                 controller: null,
                 hours: {
                   original: ['d@0-24'],
@@ -1231,7 +1231,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Make a travel insurance claim',
                 action: 'tel:+44330 024 1308',
-                value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+44330 024 1308' },
+                value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+443300241308' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20'],
@@ -1254,7 +1254,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Legal advice and expenses claim',
                 action: 'tel:+44330 024 1309',
-                value: { original: '+44330 024 1309', country: 'GB', display: '0330 024 1309', dial: '+44330 024 1309' },
+                value: { original: '+44330 024 1309', country: 'GB', display: '0330 024 1309', dial: '+443300241309' },
                 controller: null,
                 hours: {
                   original: ['wd@8.30-19', '6@9-17'],
@@ -1277,7 +1277,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claims complaints',
                 action: 'tel:+44330 024 1308',
-                value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+44330 024 1308' },
+                value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+443300241308' },
                 controller: null,
                 hours: {
                   original: ['wd@8.30-19', '6@9-17'],
@@ -1300,7 +1300,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Policy complaints',
                 action: 'tel:+44330 024 1307',
-                value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+44330 024 1307' },
+                value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+443300241307' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17', '7@9-16'],
@@ -1356,7 +1356,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1307',
                     description: 'Customer services and cancellations',
-                    value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+44330 024 1307' },
+                    value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+443300241307' },
                   },
                   {
                     hours: {
@@ -1374,7 +1374,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1229',
                     description: 'Manage your payments',
-                    value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+44330 024 1229' },
+                    value: { original: '+44330 024 1229', country: 'GB', display: '0330 024 1229', dial: '+443300241229' },
                   },
                   {
                     hours: {
@@ -1392,7 +1392,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44173 781 5626',
                     description: 'Emergency medical/ repatriation',
-                    value: { original: '+44173 781 5626', country: 'GB', display: '0173 781 5626', dial: '+44173 781 5626' },
+                    value: { original: '+44173 781 5626', country: 'GB', display: '0173 781 5626', dial: '+441737815626' },
                   },
                   {
                     hours: {
@@ -1410,7 +1410,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1308',
                     description: 'Make a travel insurance claim',
-                    value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+44330 024 1308' },
+                    value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+443300241308' },
                   },
                   {
                     hours: {
@@ -1428,7 +1428,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1309',
                     description: 'Legal advice and expenses claim',
-                    value: { original: '+44330 024 1309', country: 'GB', display: '0330 024 1309', dial: '+44330 024 1309' },
+                    value: { original: '+44330 024 1309', country: 'GB', display: '0330 024 1309', dial: '+443300241309' },
                   },
                   {
                     hours: {
@@ -1446,7 +1446,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1308',
                     description: 'Claims complaints',
-                    value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+44330 024 1308' },
+                    value: { original: '+44330 024 1308', country: 'GB', display: '0330 024 1308', dial: '+443300241308' },
                   },
                   {
                     hours: {
@@ -1464,7 +1464,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 024 1307',
                     description: 'Policy complaints',
-                    value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+44330 024 1307' },
+                    value: { original: '+44330 024 1307', country: 'GB', display: '0330 024 1307', dial: '+443300241307' },
                   },
                 ],
               },
@@ -1500,7 +1500,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services, complaints and cancellations',
                 action: 'tel:+44330 159 1512',
-                value: { original: '+44330 159 1512', country: 'GB', display: '0330 159 1512', dial: '+44330 159 1512' },
+                value: { original: '+44330 159 1512', country: 'GB', display: '0330 159 1512', dial: '+443301591512' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18'],
@@ -1523,7 +1523,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Sales enquiries',
                 action: 'tel:+44330 159 1522',
-                value: { original: '+44330 159 1522', country: 'GB', display: '0330 159 1522', dial: '+44330 159 1522' },
+                value: { original: '+44330 159 1522', country: 'GB', display: '0330 159 1522', dial: '+443301591522' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18'],
@@ -1546,7 +1546,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Landlord insurance claims',
                 action: 'tel:+44345 600 2715',
-                value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+44345 600 2715' },
+                value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+443456002715' },
                 controller: null,
                 hours: {
                   original: ['d@0-24'],
@@ -1602,7 +1602,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 159 1512',
                     description: 'Customer services, complaints and cancellations',
-                    value: { original: '+44330 159 1512', country: 'GB', display: '0330 159 1512', dial: '+44330 159 1512' },
+                    value: { original: '+44330 159 1512', country: 'GB', display: '0330 159 1512', dial: '+443301591512' },
                   },
                   {
                     hours: {
@@ -1620,7 +1620,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 159 1522',
                     description: 'Sales enquiries',
-                    value: { original: '+44330 159 1522', country: 'GB', display: '0330 159 1522', dial: '+44330 159 1522' },
+                    value: { original: '+44330 159 1522', country: 'GB', display: '0330 159 1522', dial: '+443301591522' },
                   },
                   {
                     hours: {
@@ -1638,7 +1638,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44345 600 2715',
                     description: 'Landlord insurance claims',
-                    value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+44345 600 2715' },
+                    value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+443456002715' },
                   },
                 ],
               },
@@ -1672,7 +1672,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Customer services and cancellations',
                 action: 'tel:+44330 159 1508',
-                value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+44330 159 1508' },
+                value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+443301591508' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18'],
@@ -1695,7 +1695,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Sales enquiries',
                 action: 'tel:+44330 159 1520',
-                value: { original: '+44330 159 1520', country: 'GB', display: '0330 159 1520', dial: '+44330 159 1520' },
+                value: { original: '+44330 159 1520', country: 'GB', display: '0330 159 1520', dial: '+443301591520' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18'],
@@ -1718,7 +1718,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Manage your payments',
                 action: 'tel:+44330 159 1525',
-                value: { original: '+44330 159 1525', country: 'GB', display: '0330 159 1525', dial: '+44330 159 1525' },
+                value: { original: '+44330 159 1525', country: 'GB', display: '0330 159 1525', dial: '+443301591525' },
                 controller: null,
                 hours: {
                   original: ['wd@8-18'],
@@ -1741,7 +1741,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Business new and existing claims',
                 action: 'tel:+44345 600 2715',
-                value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+44345 600 2715' },
+                value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+443456002715' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -1752,7 +1752,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Professional indemnity existing claims',
                 action: 'tel:+44844 381 4418',
-                value: { original: '+44844 381 4418', country: 'GB', display: '0844 381 4418', dial: '+44844 381 4418' },
+                value: { original: '+44844 381 4418', country: 'GB', display: '0844 381 4418', dial: '+448443814418' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -1763,7 +1763,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claims complaints',
                 action: 'tel:+44345 600 2715',
-                value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+44345 600 2715' },
+                value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+443456002715' },
                 controller: null,
                 hours: {
                   original: [],
@@ -1786,7 +1786,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Policy complaints',
                 action: 'tel:+44330 159 1508',
-                value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+44330 159 1508' },
+                value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+443301591508' },
                 controller: null,
                 hours: {
                   original: [],
@@ -1841,7 +1841,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 159 1508',
                     description: 'Customer services and cancellations',
-                    value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+44330 159 1508' },
+                    value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+443301591508' },
                   },
                   {
                     hours: {
@@ -1859,7 +1859,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 159 1520',
                     description: 'Sales enquiries',
-                    value: { original: '+44330 159 1520', country: 'GB', display: '0330 159 1520', dial: '+44330 159 1520' },
+                    value: { original: '+44330 159 1520', country: 'GB', display: '0330 159 1520', dial: '+443301591520' },
                   },
                   {
                     hours: {
@@ -1877,17 +1877,17 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 159 1525',
                     description: 'Manage your payments',
-                    value: { original: '+44330 159 1525', country: 'GB', display: '0330 159 1525', dial: '+44330 159 1525' },
+                    value: { original: '+44330 159 1525', country: 'GB', display: '0330 159 1525', dial: '+443301591525' },
                   },
                   {
                     action: 'tel:+44345 600 2715',
                     description: 'Business new and existing claims',
-                    value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+44345 600 2715' },
+                    value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+443456002715' },
                   },
                   {
                     action: 'tel:+44844 381 4418',
                     description: 'Professional indemnity existing claims',
-                    value: { original: '+44844 381 4418', country: 'GB', display: '0844 381 4418', dial: '+44844 381 4418' },
+                    value: { original: '+44844 381 4418', country: 'GB', display: '0844 381 4418', dial: '+448443814418' },
                   },
                   {
                     hours: {
@@ -1905,7 +1905,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44345 600 2715',
                     description: 'Claims complaints',
-                    value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+44345 600 2715' },
+                    value: { original: '+44345 600 2715', country: 'GB', display: '0345 600 2715', dial: '+443456002715' },
                   },
                   {
                     hours: {
@@ -1923,7 +1923,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44330 159 1508',
                     description: 'Policy complaints',
-                    value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+44330 159 1508' },
+                    value: { original: '+44330 159 1508', country: 'GB', display: '0330 159 1508', dial: '+443301591508' },
                   },
                 ],
               },
@@ -1959,7 +1959,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Get a quote or buy a private healthcare plan',
                 action: 'tel:+44800 111 4004',
-                value: { original: '+44800 111 4004', country: 'GB', display: '0800 111 4004', dial: '+44800 111 4004' },
+                value: { original: '+44800 111 4004', country: 'GB', display: '0800 111 4004', dial: '+448001114004' },
                 controller: null,
                 hours: {
                   original: ['wd@9-19'],
@@ -1982,7 +1982,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claim for back, joint or muscle pain',
                 action: 'tel:+44800 029 4236',
-                value: { original: '+44800 029 4236', country: 'GB', display: '0800 029 4236', dial: '+44800 029 4236' },
+                value: { original: '+44800 029 4236', country: 'GB', display: '0800 029 4236', dial: '+448000294236' },
                 controller: null,
                 hours: {
                   original: [],
@@ -2005,7 +2005,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claim for a mental health condition',
                 action: 'tel:+44800 521 903',
-                value: { original: '+44800 521 903', country: 'GB', display: '0800 521 903', dial: '+44800 521 903' },
+                value: { original: '+44800 521 903', country: 'GB', display: '0800 521 903', dial: '+44800521903' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -2016,7 +2016,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Claims for membership number starting with AXA (i.e. AXA/R1234567)',
                 action: 'tel:+44800 027 1384',
-                value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+44800 027 1384' },
+                value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+448000271384' },
                 controller: null,
                 hours: {
                   original: [],
@@ -2039,7 +2039,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'All other claims or unkown membership number',
                 action: 'tel:+44800 132 203',
-                value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800 132 203' },
+                value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800132203' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -2062,7 +2062,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Make a change to your plan',
                 action: 'tel:+44345 607 6280',
-                value: { original: '+44345 607 6280', country: 'GB', display: '0345 607 6280', dial: '+44345 607 6280' },
+                value: { original: '+44345 607 6280', country: 'GB', display: '0345 607 6280', dial: '+443456076280' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -2085,7 +2085,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Invoice or payment queries',
                 action: 'tel:+44800 029 4233',
-                value: { original: '+44800 029 4233', country: 'GB', display: '0800 029 4233', dial: '+44800 029 4233' },
+                value: { original: '+44800 029 4233', country: 'GB', display: '0800 029 4233', dial: '+448000294233' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -2108,7 +2108,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Help with your online account',
                 action: 'tel:+44800 302 9133',
-                value: { original: '+44800 302 9133', country: 'GB', display: '0800 302 9133', dial: '+44800 302 9133' },
+                value: { original: '+44800 302 9133', country: 'GB', display: '0800 302 9133', dial: '+448003029133' },
                 controller: null,
                 hours: {
                   original: ['wd@8-17', '6@9-17'],
@@ -2131,7 +2131,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Send feedback for membership number starting with AXA (i.e. AXA/R1234567)',
                 action: 'tel:+44800 027 1384',
-                value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+44800 027 1384' },
+                value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+448000271384' },
                 controller: null,
                 hours: {
                   original: [],
@@ -2154,7 +2154,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Send feedback if you don’t know your membership number',
                 action: 'tel:+44800 132 203',
-                value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800 132 203' },
+                value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800132203' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -2177,7 +2177,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Cancel your plan',
                 action: 'tel:+44189 251 2345',
-                value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+44189 251 2345' },
+                value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+441892512345' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -2188,7 +2188,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Cancel AXA Health plan provided by your employer',
                 action: 'tel:+44800 032 1965',
-                value: { original: '+44800 032 1965', country: 'GB', display: '0800 032 1965', dial: '+44800 032 1965' },
+                value: { original: '+44800 032 1965', country: 'GB', display: '0800 032 1965', dial: '+448000321965' },
                 controller: null,
                 hours: {
                   original: ['wd@8-20', '6@9-17'],
@@ -2211,7 +2211,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Overseas calls',
                 action: 'tel:+44189 251 2345',
-                value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+44189 251 2345' },
+                value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+441892512345' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -2222,7 +2222,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Health at Hand experts',
                 action: 'tel:+44800 003 004',
-                value: { original: '+44800 003 004', country: 'GB', display: '0800 003 004', dial: '+44800 003 004' },
+                value: { original: '+44800 003 004', country: 'GB', display: '0800 003 004', dial: '+44800003004' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -2233,7 +2233,7 @@ describe('Company API Integration Tests', () => {
                 description_default: 'Call',
                 description: 'Find an English speaking Doctor while abroad',
                 action: 'tel:+44189 277 2578',
-                value: { original: '+44189 277 2578', country: 'GB', display: '0189 277 2578', dial: '+44189 277 2578' },
+                value: { original: '+44189 277 2578', country: 'GB', display: '0189 277 2578', dial: '+441892772578' },
                 controller: null,
                 hours: null,
                 icon: 'https://100px.logos.uk/telephone.media.num.uk.png',
@@ -2277,7 +2277,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 111 4004',
                     description: 'Get a quote or buy a private healthcare plan',
-                    value: { original: '+44800 111 4004', country: 'GB', display: '0800 111 4004', dial: '+44800 111 4004' },
+                    value: { original: '+44800 111 4004', country: 'GB', display: '0800 111 4004', dial: '+448001114004' },
                   },
                   {
                     hours: {
@@ -2295,12 +2295,12 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 029 4236',
                     description: 'Claim for back, joint or muscle pain',
-                    value: { original: '+44800 029 4236', country: 'GB', display: '0800 029 4236', dial: '+44800 029 4236' },
+                    value: { original: '+44800 029 4236', country: 'GB', display: '0800 029 4236', dial: '+448000294236' },
                   },
                   {
                     action: 'tel:+44800 521 903',
                     description: 'Claim for a mental health condition',
-                    value: { original: '+44800 521 903', country: 'GB', display: '0800 521 903', dial: '+44800 521 903' },
+                    value: { original: '+44800 521 903', country: 'GB', display: '0800 521 903', dial: '+44800521903' },
                   },
                   {
                     hours: {
@@ -2318,7 +2318,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 027 1384',
                     description: 'Claims for membership number starting with AXA (i.e. AXA/R1234567)',
-                    value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+44800 027 1384' },
+                    value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+448000271384' },
                   },
                   {
                     hours: {
@@ -2336,7 +2336,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 132 203',
                     description: 'All other claims or unkown membership number',
-                    value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800 132 203' },
+                    value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800132203' },
                   },
                   {
                     hours: {
@@ -2354,7 +2354,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44345 607 6280',
                     description: 'Make a change to your plan',
-                    value: { original: '+44345 607 6280', country: 'GB', display: '0345 607 6280', dial: '+44345 607 6280' },
+                    value: { original: '+44345 607 6280', country: 'GB', display: '0345 607 6280', dial: '+443456076280' },
                   },
                   {
                     hours: {
@@ -2372,7 +2372,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 029 4233',
                     description: 'Invoice or payment queries',
-                    value: { original: '+44800 029 4233', country: 'GB', display: '0800 029 4233', dial: '+44800 029 4233' },
+                    value: { original: '+44800 029 4233', country: 'GB', display: '0800 029 4233', dial: '+448000294233' },
                   },
                   {
                     hours: {
@@ -2390,7 +2390,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 302 9133',
                     description: 'Help with your online account',
-                    value: { original: '+44800 302 9133', country: 'GB', display: '0800 302 9133', dial: '+44800 302 9133' },
+                    value: { original: '+44800 302 9133', country: 'GB', display: '0800 302 9133', dial: '+448003029133' },
                   },
                   {
                     hours: {
@@ -2408,7 +2408,7 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 027 1384',
                     description: 'Send feedback for membership number starting with AXA (i.e. AXA/R1234567)',
-                    value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+44800 027 1384' },
+                    value: { original: '+44800 027 1384', country: 'GB', display: '0800 027 1384', dial: '+448000271384' },
                   },
                   {
                     hours: {
@@ -2426,12 +2426,12 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 132 203',
                     description: 'Send feedback if you don’t know your membership number',
-                    value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800 132 203' },
+                    value: { original: '+44800 132 203', country: 'GB', display: '0800 132 203', dial: '+44800132203' },
                   },
                   {
                     action: 'tel:+44189 251 2345',
                     description: 'Cancel your plan',
-                    value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+44189 251 2345' },
+                    value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+441892512345' },
                   },
                   {
                     hours: {
@@ -2449,22 +2449,22 @@ describe('Company API Integration Tests', () => {
                     },
                     action: 'tel:+44800 032 1965',
                     description: 'Cancel AXA Health plan provided by your employer',
-                    value: { original: '+44800 032 1965', country: 'GB', display: '0800 032 1965', dial: '+44800 032 1965' },
+                    value: { original: '+44800 032 1965', country: 'GB', display: '0800 032 1965', dial: '+448000321965' },
                   },
                   {
                     action: 'tel:+44189 251 2345',
                     description: 'Overseas calls',
-                    value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+44189 251 2345' },
+                    value: { original: '+44189 251 2345', country: 'GB', display: '0189 251 2345', dial: '+441892512345' },
                   },
                   {
                     action: 'tel:+44800 003 004',
                     description: 'Health at Hand experts',
-                    value: { original: '+44800 003 004', country: 'GB', display: '0800 003 004', dial: '+44800 003 004' },
+                    value: { original: '+44800 003 004', country: 'GB', display: '0800 003 004', dial: '+44800003004' },
                   },
                   {
                     action: 'tel:+44189 277 2578',
                     description: 'Find an English speaking Doctor while abroad',
-                    value: { original: '+44189 277 2578', country: 'GB', display: '0189 277 2578', dial: '+44189 277 2578' },
+                    value: { original: '+44189 277 2578', country: 'GB', display: '0189 277 2578', dial: '+441892772578' },
                   },
                 ],
               },
