@@ -156,11 +156,19 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
   } else {
     // We have an existing outstanding promise so resolve it.
     const contactsUriPromise = usedUris.get(contactsUriString) as Promise<string | null>;
-    return contactsUriPromise.then((s) => {
-      if (s) {
-        return Promise.resolve(JSON.parse(s));
+    return contactsUriPromise.then((contacts) => {
+      const contactsObject: Record<string, unknown> =
+        contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: 'gb', _L: 'en' }, null) : {};
+      delete contactsObject['numVersion'];
+      delete contactsObject['populated'];
+
+      // There should only be one key left after deleting the `@n` key...
+      for (const k in contactsObject) {
+        lookup.link[k] = contactsObject[k];
+        break; // The first item _should_ be the right one
       }
-      return Promise.resolve(null);
+
+      return contactsObject;
     }, handleError);
   }
 };

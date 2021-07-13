@@ -93,7 +93,7 @@ describe('Company API', () => {
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
-      '{"object_type":"organization","object_display_name":"Organisation","name":"dummy-cyclic.com","slogan":null,"contacts":[{"method_type":"link","@L":"sub-page-1","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"link","@L":"/","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png"}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"/"}]}}}}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"sub-page-1"}]}}}'
+      '{"object_type":"organization","object_display_name":"Organisation","name":"dummy-cyclic.com","slogan":null,"contacts":[{"method_type":"link","@L":"sub-page-1","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"link","@L":"/","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"organization","object_display_name":"Organisation","name":"dummy-cyclic.com","slogan":null,"contacts":[{"method_type":"link","@L":"sub-page-1","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png"}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"sub-page-1"}]}}}}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"/"}]}}}}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"sub-page-1"}]}}}'
     );
   });
 
@@ -107,6 +107,19 @@ describe('Company API', () => {
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
       '{"object_type":"organization","object_display_name":"Organisation","name":"dummy-absolute.com","slogan":null,"contacts":[{"method_type":"link","@L":"num://absolute-link.com:3/sub-page-1","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"link","@L":"/","description":"John","icon":"https://100px.logos.uk/link.media.num.uk.png"}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"/"}]}}}}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"John","@L":"num://absolute-link.com:3/sub-page-1"}]}}}'
+    );
+  });
+
+  it('Can expand two links that refer to the same NUM URI', async () => {
+    const dummy = new DummyNumClient();
+
+    const api = createCompanyApi(dummy);
+
+    const result = await api.lookupUri(buildNumUri('same-uri.com'));
+    expect(result).not.null;
+    const resultStr = JSON.stringify(result);
+    expect(resultStr).to.equal(
+      '{"object_display_name":"Organisation","object_type":"organization","name":"same-uri.com","slogan":null,"contacts":[{"method_type":"link","@L":"insurance","description":"Insurance","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_display_name":"Organisation","object_type":"organization","name":"same-uri.com","slogan":null,"contacts":[{"method_type":"link","@L":"/pets","description":"Pet Insurance","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"organization","object_display_name":"Organisation","name":"Pet Insurance","contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":{"original":"456456456","error":"Sms telephone number not in valid international format","display":"456456456","dial":"456456456"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}],"methods":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"456456456","error":"Sms telephone number not in valid international format","display":"456456456","dial":"456456456"}}]}}}},{"method_type":"link","@L":"/health","description":"Health Insurance","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"organization","object_display_name":"Organisation","name":"Health Insurance","contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":{"original":"456456456","error":"Sms telephone number not in valid international format","display":"456456456","dial":"456456456"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}],"methods":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"456456456","error":"Sms telephone number not in valid international format","display":"456456456","dial":"456456456"}}]}}}}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"Pet Insurance","@L":"/pets"},{"description":"Health Insurance","@L":"/health"}]}}}},{"method_type":"link","@L":"health","description":"Health Insurance","icon":"https://100px.logos.uk/link.media.num.uk.png","numObject":{"object_type":"organization","object_display_name":"Organisation","name":"Health Insurance","contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":{"original":"456456456","error":"Sms telephone number not in valid international format","display":"456456456","dial":"456456456"},"hours":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}],"methods":{"telephone":{"object_display_name":"Telephone","description_default":"Call","prefix":"tel:","icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"value":{"original":"456456456","error":"Sms telephone number not in valid international format","display":"456456456","dial":"456456456"}}]}}}}],"methods":{"link":{"icon":"https://100px.logos.uk/link.media.num.uk.png","list":[{"description":"Insurance","@L":"insurance"},{"description":"Health Insurance","@L":"health"}]}}}'
     );
   });
 });
@@ -166,6 +179,18 @@ class DummyNumClient implements NumClient {
         '{"@n":1,"object_type":"person","object_display_name":"Person","name":"John Doe","bio":null,"contacts":[{"method_type":"link","@L":"/","description":"John"}]}';
     } else if (ctx.numAddress.host.s === 'absolute-link.com' && ctx.numAddress.path.s === '/sub-page-1' && ctx.numAddress.port.n === 3) {
       r = null;
+    } else if (ctx.numAddress.host.s === 'same-uri.com' && ctx.numAddress.path.s === '/' && ctx.numAddress.port.n === 1) {
+      r =
+        '{"@n":1,"@p":true,"object_display_name":"Organisation","object_type":"organization","name":"same-uri.com","slogan":null,"contacts":[{"method_type":"link","@L":"insurance","description":"Insurance"},{"method_type":"link","@L":"health","description":"Health Insurance"}]}';
+    } else if (ctx.numAddress.host.s === 'same-uri.com' && ctx.numAddress.path.s === '/insurance' && ctx.numAddress.port.n === 1) {
+      r =
+        '{"@n":1,"@p":true,"object_display_name":"Organisation","object_type":"organization","name":"same-uri.com","slogan":null,"contacts":[{"method_type":"link","@L":"/pets","description":"Pet Insurance"},{"method_type":"link","@L":"/health","description":"Health Insurance"}]}';
+    } else if (ctx.numAddress.host.s === 'same-uri.com' && ctx.numAddress.path.s === '/health' && ctx.numAddress.port.n === 1) {
+      r =
+        '{"@n":1,"object_type":"organization","object_display_name":"Organisation","name":"Health Insurance","contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":"456456456","hours":null}]}';
+    } else if (ctx.numAddress.host.s === 'same-uri.com' && ctx.numAddress.path.s === '/pets' && ctx.numAddress.port.n === 1) {
+      r =
+        '{"@n":1,"object_type":"organization","object_display_name":"Organisation","name":"Pet Insurance","contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":"456456456","hours":null}]}';
     } else {
       console.log(`UNKNOWN numAddress = ${ctx.numAddress}`);
     }
