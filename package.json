@@ -8,7 +8,7 @@
     "assert": "^2.0.0",
     "libphonenumber-js": "^1.9.19",
     "modl-interpreter": "0.0.13",
-    "num-client": "^1.0.1",
+    "num-client": "^1.0.3",
     "object-unpacker": "0.0.17",
     "url": "^0.11.0",
     "util": "^0.12.3"

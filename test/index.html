@@ -8,6 +8,7 @@
 
 <body>
   <script src="../dist/bundle.js"></script>
+  <script src="../../num-javascript-client/dist/bundle.js"></script>
   <h1>NUM Company API Example</h1>
   <div>
     <p>Domain = <input type="text" value="axa.co.uk" id='urivalue' onchange="reloadRecord()"></p>
@@ -20,7 +21,14 @@
   </div>
   <script>
 
-    const api = CompanyApi.createCompanyApi();
+    const CUSTOM_RESOLVERS = [
+      new NumClient.DoHResolver('BAD', 'https://jhsgfdjhsgdkweg32767236eddghagsf.com/dns-query'),
+      new NumClient.DoHResolver('Cloudflare', 'https://cloudflare-dns.com/dns-query')
+    ];
+
+    // Pass in an optional array of DoHResolvers now instead of a `dnsClient`
+    const client = NumClient.createClient(CUSTOM_RESOLVERS);
+    const api = CompanyApi.createCompanyApi(client);
 
     function lookup(uri, options) {
       return api.lookupDomain(uri, options);
