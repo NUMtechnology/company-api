@@ -144,7 +144,9 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
           if (images !== null) {
             const imagesObject = JSON.parse(images).images;
 
-            (contactsObject['numObject'] as Record<string, unknown>).images = imagesObject;
+            if (contactsObject['numObject']) {
+              (contactsObject['numObject'] as Record<string, unknown>).images = imagesObject;
+            }
           }
           return Promise.all([imagesPromise, subRecordsPromise]).then(() => {
             return subRecordsPromise;
