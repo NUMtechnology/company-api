@@ -431,9 +431,9 @@ export default class ContactsModuleHelper {
     // Loop through each of the hours objects
     for (const setting of hourSettings) {
       if (setting.hours) {
-        let hoursArray = setting.hours.available;
+        const hoursArray = setting.hours.available;
         if (hoursArray === undefined) {
-          hoursArray = [];
+          return;
         }
         const timeZoneCity = setting.hours.time_zone_location;
         logger.debug(`Time zone city: ${timeZoneCity}`);
