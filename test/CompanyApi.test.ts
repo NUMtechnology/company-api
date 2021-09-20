@@ -2,9 +2,8 @@ import { expect } from 'chai';
 import { buildNumUri, NumClient, NumUri, PositiveInteger } from 'num-client';
 import { CallbackHandler } from 'num-client/dist/client';
 import { Context, NumLocation, UserVariable } from 'num-client/dist/context';
-import { ModuleDnsQueries } from 'num-client/dist/modulednsqueries';
+import { createModuleDnsQueries, ModuleDnsQueries } from 'num-client/dist/modulednsqueries';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
-import { createModuleDnsQueries } from '../../num-javascript-client/src/modulednsqueries';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
 
 describe('Company API', () => {

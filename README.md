@@ -5,6 +5,7 @@ An API for aggregating NUM Contacts Module and Images Module Records into a sing
 ## Installation For Local Testing
 
 - `git clone git@github.com:NUMtechnology/company-api.git`
+- `cd company-api`
 - `npm install`
 - `webpack`
 - Open `test/index.html` in your browser.

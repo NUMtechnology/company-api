@@ -5,7 +5,7 @@ import { ResourceLoader } from 'num-client/dist/resourceloader';
 const log = loglevel as Logger;
 
 export class DummyResourceLoader implements ResourceLoader {
-  setenv(env: string) {
+  setenv(env: string): void {
     log.warn(`Ignoring call to setenv(${env})`);
   }
   async load(url: string): Promise<Record<string, unknown>> {
