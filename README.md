@@ -7,14 +7,25 @@ An API for aggregating NUM Contacts Module and Images Module Records into a sing
 - `git clone git@github.com:NUMtechnology/company-api.git`
 - `cd company-api`
 - `npm install`
-- `webpack`
 - Open `test/index.html` in your browser.
 
 ## Installation For Use In An Application
 
 - `npm install -s company-api`
 
-## Simple Application Usage
+## Simple Application Usage in JavaScript
+```JavaScript
+const companyApi = require('company-api');
+
+// Create an API instance
+const api = companyApi.createCompanyApi();
+
+// Use it to look up a domain
+api.lookupDomain('numexample.com').then((result) => {
+  console.log(JSON.stringify(result));
+});
+```
+## Simple Application Usage in TypeScript
 
 ```typescript
 import { createCompanyApi } from 'company-api';
