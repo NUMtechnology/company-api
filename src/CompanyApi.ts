@@ -138,7 +138,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
       // Follow any `link` records
       const subRecordsPromise = followLinks(client, usedUris, contactsObject, lookup.contactsUri, options);
 
-      // Handle the imags promise second since we need to include the images in the contacts object.
+      // Handle the images promise second since we need to include the images in the contacts object.
       if (imagesPromise) {
         return imagesPromise.then((images) => {
           if (images !== null) {

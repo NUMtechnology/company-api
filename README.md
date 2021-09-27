@@ -23,6 +23,8 @@ const api = companyApi.createCompanyApi();
 // Use it to look up a domain
 api.lookupDomain('numexample.com').then((result) => {
   console.log(JSON.stringify(result));
+}, (err)=>{
+  console.error('ERROR: ', JSON.stringify(err));
 });
 ```
 ## Simple Application Usage in TypeScript
@@ -36,6 +38,8 @@ const api = createCompanyApi();
 // Use it to look up a domain
 api.lookupDomain('numexample.com').then((result) => {
   console.log(JSON.stringify(result));
+}, (err)=>{
+  console.error('ERROR: ', JSON.stringify(err));
 });
 ```
 
@@ -55,6 +59,8 @@ const options = new CompanyApiOptions(
 // Use it to look up a domain
 api.lookupDomain('numexample.com', options).then((result) => {
   console.log(JSON.stringify(result));
+}, (err)=>{
+  console.error('ERROR: ', JSON.stringify(err));
 });
 ```
 
@@ -74,5 +80,7 @@ const api = createCompanyApi(existingClient);
 // Use it to look up a domain
 api.lookupDomain('numexample.com').then((result) => {
   console.log(JSON.stringify(result));
+}, (err)=>{
+  console.error('ERROR: ', JSON.stringify(err));
 });
 ```

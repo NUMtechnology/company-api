@@ -395,7 +395,7 @@ export default class ContactsModuleHelper {
         if (ContactsModuleHelper.isEmptyObject(parsedNumber)) {
           object.value.error = 'Sms telephone number not in valid international format';
           object.value.display = telephoneNumber;
-          object.value.dial = telephoneNumber.replaceAll(' ', '');
+          object.value.dial = telephoneNumber.replace(/ /gi, '');
         } else {
           const telephoneCountry = parsedNumber['country'];
           object.value.country = telephoneCountry;
@@ -410,11 +410,11 @@ export default class ContactsModuleHelper {
               object.value.display = telephoneNumber.replace(internationalPrefix, nationalPrefix);
             }
 
-            object.value.dial = telephoneNumber.replaceAll(' ', '');
+            object.value.dial = telephoneNumber.replace(/ /gi, '');
           } else {
             // display international format
             object.value.display = telephoneNumber;
-            object.value.dial = telephoneNumber.replaceAll(' ', '');
+            object.value.dial = telephoneNumber.replace(/ /gi, '');
           }
         }
       }
