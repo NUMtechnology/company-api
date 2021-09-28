@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import log from 'loglevel';
 import { buildNumUri, NumClient, NumUri, PositiveInteger } from 'num-client';
 import { CallbackHandler } from 'num-client/dist/client';
 import { Context, NumLocation, UserVariable } from 'num-client/dist/context';
@@ -191,7 +192,7 @@ class DummyNumClient implements NumClient {
       r =
         '{"@n":1,"object_type":"organization","object_display_name":"Organisation","name":"Pet Insurance","contacts":[{"object_display_name":"Telephone","description_default":"Call","description":null,"prefix":"tel:","method_type":"telephone","value":"456456456","hours":null}]}';
     } else {
-      console.log(`UNKNOWN numAddress = ${ctx.numAddress}`);
+      log.debug(`UNKNOWN numAddress = ${ctx.numAddress}`);
     }
     ctx.result = r;
     if (handler && r) {
@@ -281,7 +282,7 @@ class DummyContext implements Context {
    * @throws NumInvalidRedirectException          on Error
    */
   handleQueryRedirect(redirect: string): void {
-    console.log('QUERY REDIRECT: ' + redirect);
+    log.info('QUERY REDIRECT: ' + redirect);
   }
 
   /**
@@ -292,7 +293,7 @@ class DummyContext implements Context {
    * @throws NumInvalidRedirectException on error
    */
   handleHostedQueryRedirect(redirectTo: string): void {
-    console.log('HOSTED QUERY REDIRECT: ' + redirectTo);
+    log.info('HOSTED QUERY REDIRECT: ' + redirectTo);
   }
 
   /**
@@ -303,6 +304,6 @@ class DummyContext implements Context {
    * @throws NumInvalidRedirectException on error
    */
   handleIndependentQueryRedirect(redirectTo: string): void {
-    console.log('INDEPENDENT QUERY REDIRECT: ' + redirectTo);
+    log.info('INDEPENDENT QUERY REDIRECT: ' + redirectTo);
   }
 }

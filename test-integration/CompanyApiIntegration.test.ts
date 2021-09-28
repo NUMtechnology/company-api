@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import deepEql from 'deep-eql';
+import log from 'loglevel';
 import { buildNumUri, createClient } from 'num-client';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
 import { DummyResourceLoader } from './DummyResourceLoader';
 
 const dummyResourceLoader = new DummyResourceLoader();
-dummyResourceLoader.setenv('no effect');
+
+log.setLevel('error');
 
 describe('Company API Integration Tests', () => {
   it('Can lookup a NUM URI using a CompanyApi instance with depth of 0', async () => {
@@ -125,8 +127,8 @@ describe('Company API Integration Tests', () => {
 
     const same = deepEql(result, expected);
     if (!same) {
-      console.log(`Actual  : ${JSON.stringify(result)}`);
-      console.log(`Expected: ${JSON.stringify(expected)}`);
+      log.error(`Actual  : ${JSON.stringify(result)}`);
+      log.error(`Expected: ${JSON.stringify(expected)}`);
     }
     expect(same).to.equal(true);
   });
@@ -2557,8 +2559,8 @@ describe('Company API Integration Tests', () => {
 
     const same = deepEql(result, expected);
     if (!same) {
-      console.log(`Actual  : ${JSON.stringify(result)}`);
-      console.log(`Expected: ${JSON.stringify(expected)}`);
+      log.error(`Actual  : ${JSON.stringify(result)}`);
+      log.error(`Expected: ${JSON.stringify(expected)}`);
     }
     expect(same).to.equal(true);
   });
