@@ -135,6 +135,9 @@ export default class ContactsModuleHelper {
         // The rest have a description
         keyData.push('description');
       }
+    } else if (objectType === 'method' && objectKey === 'address') {
+      // Addresses have description, lines, country, and postcode
+      keyData.push('description', 'lines', 'country', 'postcode');
     } else if (objectType === 'method' && objectKey !== 'link') {
       // Media have a description, value and accessibility
       keyData.push('description', 'value', 'accessibility');
