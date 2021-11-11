@@ -10,7 +10,7 @@
     "libphonenumber-js": "^1.9.19",
     "loglevel": "^1.7.1",
     "modl-interpreter": "0.0.17",
-    "num-client": "^1.0.26",
+    "num-client": "^1.0.27",
     "object-unpacker": "0.0.18",
     "url": "^0.11.0",
     "util": "^0.12.3"
