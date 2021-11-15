@@ -127,12 +127,19 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
       const contactsObject: Record<string, unknown> =
         contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: 'gb', _L: 'en' }, null) : {};
       delete contactsObject['numVersion'];
-      delete contactsObject['populated'];
 
-      // There should only be one key left after deleting the `@n` key...
+      // There might be two keys left after deleting the `@n` key...
       for (const k in contactsObject) {
-        lookup.link[k] = contactsObject[k];
-        break; // The first item _should_ be the right one
+        if (k !== 'populated') {
+          // Grab the body of the NUM record
+          lookup.link[k] = contactsObject[k];
+          if (contactsObject['populated']) {
+            // Copy the `populated` value if there is one.
+            const o = contactsObject[k] as Record<string, unknown>;
+            o['populated'] = contactsObject['populated'];
+          }
+          break; // This _should_ be the right one
+        }
       }
 
       // Follow any `link` records
