@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { buildNumUri, createClient, MODULE_1, MODULE_3, NumClient, NumUri, parseNumUri, UrlPath } from 'num-client';
+import {
+  buildNumUri,
+  createClient,
+  createDefaultCallbackHandler,
+  DefaultCallbackHandler,
+  MODULE_1,
+  MODULE_3,
+  NumClient,
+  NumUri,
+  parseNumUri,
+  UrlPath
+} from 'num-client';
 import ContactsModuleHelper from './Contacts';
 //------------------------------------------------------------------------------------------------------------------------
 // Exports
@@ -44,8 +55,8 @@ export const createCompanyApi = (numClient?: NumClient): CompanyApi => new Compa
 //------------------------------------------------------------------------------------------------------------------------
 // Internals
 //------------------------------------------------------------------------------------------------------------------------
-
-type UriToPromiseMap = Map<string, Promise<string | null>>;
+type PromiseAndHandler = { promise: Promise<string | null>; handler: DefaultCallbackHandler; };
+type UriToPromiseMap = Map<string, PromiseAndHandler>;
 
 /**
  * The CompanyApi implementation
@@ -76,8 +87,10 @@ class CompanyApiImpl implements CompanyApi {
       : new CompanyApiOptions(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
 
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
-    return retrieveRecord(this.client, lookup, new Map<string, Promise<string | null>>(), theOptions).then((result): Record<string, unknown> => {
-      return result['numObject'] ? (result['numObject'] as Record<string, unknown>) : result;
+    const uriMap = new Map<string, PromiseAndHandler>();
+    return retrieveRecord(this.client, lookup, uriMap, theOptions).then((result): Record<string, unknown> => {
+      const response = result['numObject'] ? (result['numObject'] as Record<string, unknown>) : result;
+      return collectErrorMetadata(response, uriMap);
     });
   }
 
@@ -94,6 +107,30 @@ class CompanyApiImpl implements CompanyApi {
 }
 
 /**
+ * Gather any error codes to an overall metadata object.
+ *
+ * @param data the company data with nested metadata
+ * @param uriMap a map of URIs to promises and handlers
+ * @returns the data with an additional error code summary
+ */
+const collectErrorMetadata = (data: Record<string, unknown>, uriMap: Map<string, PromiseAndHandler>): Record<string, unknown> => {
+  const metadata: { errors: Array<any>; } = {
+    errors: [],
+  };
+
+  for (const [uri, promiseAndHandler] of uriMap) {
+    if (promiseAndHandler.handler && promiseAndHandler.handler.getErrorCode() != null) {
+      const err = { uri: uri, error: promiseAndHandler.handler.getErrorCode() };
+      metadata.errors.push(err);
+    }
+  }
+
+  data['metadata'] = metadata;
+
+  return data;
+};
+
+/**
  * Retrieve linked NUM records recursively
  *
  * @param client the NumClient to use for lookups
@@ -108,18 +145,20 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
   }
   const options = new CompanyApiOptions(optionsParam.contactsDepth - 1, optionsParam.imagesDepth - 1);
   // Start a contacts record lookup if there isn't already one outstanding.
-  const contactsUriString = JSON.stringify(lookup.contactsUri);
+  const contactsUriString = lookup.contactsUri.toString();
 
   if (!usedUris.has(contactsUriString)) {
-    const contactsPromise = client.retrieveNumRecord(client.createContext(lookup.contactsUri));
-    usedUris.set(contactsUriString, contactsPromise);
+    const handler = createDefaultCallbackHandler() as DefaultCallbackHandler;
+    const contactsPromise = client.retrieveNumRecord(client.createContext(lookup.contactsUri), handler);
+    usedUris.set(contactsUriString, { promise: contactsPromise, handler: handler });
 
     let imagesPromise;
     // Start an images record lookup if there isn't already one outstanding.
-    const imagesUriString = JSON.stringify(lookup.imagesUri);
+    const imagesUriString = lookup.imagesUri.toString();
     if (!usedUris.has(imagesUriString) && optionsParam.imagesDepth > 0) {
-      imagesPromise = client.retrieveNumRecord(client.createContext(lookup.imagesUri));
-      usedUris.set(imagesUriString, imagesPromise);
+      const imagesHandler = createDefaultCallbackHandler() as DefaultCallbackHandler;
+      imagesPromise = client.retrieveNumRecord(client.createContext(lookup.imagesUri), imagesHandler);
+      usedUris.set(imagesUriString, { promise: imagesPromise, handler: imagesHandler });
     }
 
     // When the contacts and images records are available...
@@ -132,6 +171,11 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
       for (const k in contactsObject) {
         if (k !== 'populated') {
           // Grab the body of the NUM record
+          if (handler.getErrorCode() != null) {
+            const co = contactsObject as Record<string, Record<string, unknown>>;
+            co[k]['metadata'] = { status: handler.getErrorCode() };
+          }
+
           lookup.link[k] = contactsObject[k];
           if (contactsObject['populated']) {
             // Copy the `populated` value if there is one.
@@ -164,8 +208,8 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
     }, handleError);
   } else {
     // We have an existing outstanding promise so resolve it.
-    const contactsUriPromise = usedUris.get(contactsUriString) as Promise<string | null>;
-    return contactsUriPromise.then((contacts) => {
+    const contactsUriPromise = usedUris.get(contactsUriString) as PromiseAndHandler;
+    return contactsUriPromise.promise.then((contacts) => {
       const contactsObject: Record<string, unknown> =
         contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: 'gb', _L: 'en' }, null) : {};
       delete contactsObject['numVersion'];
@@ -173,6 +217,11 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
 
       // There should only be one key left after deleting the `@n` key...
       for (const k in contactsObject) {
+        if (contactsUriPromise.handler.getErrorCode() != null) {
+          const co = contactsObject as Record<string, Record<string, unknown>>;
+          co[k]['metadata'] = { status: contactsUriPromise.handler.getErrorCode() };
+        }
+
         lookup.link[k] = contactsObject[k];
         break; // The first item _should_ be the right one
       }
@@ -231,10 +280,10 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
       const newUri = path.startsWith('num://')
         ? parseNumUri(path)
         : path.startsWith('/')
-        ? uri.withPath(new UrlPath(path))
-        : uri.path.s.endsWith('/')
-        ? uri.withPath(new UrlPath(uri.path.s + path))
-        : uri.withPath(new UrlPath(uri.path.s + '/' + path));
+          ? uri.withPath(new UrlPath(path))
+          : uri.path.s.endsWith('/')
+            ? uri.withPath(new UrlPath(uri.path.s + path))
+            : uri.withPath(new UrlPath(uri.path.s + '/' + path));
       links.push(new Link(link, newUri));
     } else {
       const value = obj[k];
@@ -250,12 +299,12 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
  * Hold information about a NUM lookup whose result needs to be added to the `target` object.
  */
 class Lookup {
-  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) {}
+  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) { }
 }
 
 /**
  * Hold information about a link that we need to look up.
  */
 class Link {
-  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) {}
+  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) { }
 }
