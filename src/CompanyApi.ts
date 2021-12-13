@@ -9,7 +9,7 @@ import {
   NumClient,
   NumUri,
   parseNumUri,
-  UrlPath
+  UrlPath,
 } from 'num-client';
 import ContactsModuleHelper from './Contacts';
 //------------------------------------------------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ export const createCompanyApi = (numClient?: NumClient): CompanyApi => new Compa
 //------------------------------------------------------------------------------------------------------------------------
 // Internals
 //------------------------------------------------------------------------------------------------------------------------
-type PromiseAndHandler = { promise: Promise<string | null>; handler: DefaultCallbackHandler; };
+type PromiseAndHandler = { promise: Promise<string | null>; handler: DefaultCallbackHandler };
 type UriToPromiseMap = Map<string, PromiseAndHandler>;
 
 /**
@@ -114,7 +114,7 @@ class CompanyApiImpl implements CompanyApi {
  * @returns the data with an additional error code summary
  */
 const collectErrorMetadata = (data: Record<string, unknown>, uriMap: Map<string, PromiseAndHandler>): Record<string, unknown> => {
-  const metadata: { errors: Array<any>; } = {
+  const metadata: { errors: Array<any> } = {
     errors: [],
   };
 
@@ -280,10 +280,10 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
       const newUri = path.startsWith('num://')
         ? parseNumUri(path)
         : path.startsWith('/')
-          ? uri.withPath(new UrlPath(path))
-          : uri.path.s.endsWith('/')
-            ? uri.withPath(new UrlPath(uri.path.s + path))
-            : uri.withPath(new UrlPath(uri.path.s + '/' + path));
+        ? uri.withPath(new UrlPath(path))
+        : uri.path.s.endsWith('/')
+        ? uri.withPath(new UrlPath(uri.path.s + path))
+        : uri.withPath(new UrlPath(uri.path.s + '/' + path));
       links.push(new Link(link, newUri));
     } else {
       const value = obj[k];
@@ -299,12 +299,12 @@ const findLinks = (obj: Record<string, unknown>, uri: NumUri): Array<Link> => {
  * Hold information about a NUM lookup whose result needs to be added to the `target` object.
  */
 class Lookup {
-  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) { }
+  constructor(readonly link: Record<string, unknown>, readonly contactsUri: NumUri, readonly imagesUri: NumUri) {}
 }
 
 /**
  * Hold information about a link that we need to look up.
  */
 class Link {
-  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) { }
+  constructor(readonly link: Record<string, unknown>, readonly uri: NumUri) {}
 }
