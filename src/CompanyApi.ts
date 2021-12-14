@@ -120,7 +120,7 @@ const collectErrorMetadata = (data: Record<string, unknown>, uriMap: Map<string,
 
   for (const [uri, promiseAndHandler] of uriMap) {
     if (promiseAndHandler.handler && promiseAndHandler.handler.getErrorCode() != null) {
-      const err = { uri: uri, error: promiseAndHandler.handler.getErrorCode() };
+      const err = { uri: uri, error: promiseAndHandler.handler.getErrorCode(), moduleNumber: parseNumUri(uri).port.n };
       metadata.errors.push(err);
     }
   }
