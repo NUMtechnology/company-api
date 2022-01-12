@@ -51,9 +51,16 @@ import { createCompanyApi, CompanyApiOptions } from 'company-api';
 // Create an API instance
 const api = createCompanyApi();
 
+const versionMap = new Map<number, string>();
+// Module 1 (Contacts) is currently at version 2, the others will default to version 1.
+// An empty map can be supplied which sets the default version for each NUM module ('2' for Contacts, '1' for everything else).
+versionMap.set(1,'2');
+versionMap.set(3,'1.5'); // E.g. use v1.5 of the Images module (if such a version exists)
+
 const options = new CompanyApiOptions(
-    2,// The number of levels for Contacts records. 0 returns no contacts data.
-    1 // The number of levels for Images records.   0 returns no images data.
+    2, // The number of levels for Contacts records. 0 returns no contacts data.
+    1, // The number of levels for Images records.   0 returns no images data.
+    versionMap 
   );
 
 // Use it to look up a domain

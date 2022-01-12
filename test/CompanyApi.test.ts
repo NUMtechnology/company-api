@@ -26,7 +26,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(0, 0));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(0, 0, new Map()));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal('{"metadata":{"errors":[]}}');
@@ -37,7 +37,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 0));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 0, new Map()));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -50,7 +50,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 1));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 1, new Map()));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -63,7 +63,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 1));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 1, new Map()));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -76,7 +76,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 2));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 2, new Map()));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -228,6 +228,7 @@ class DummyContext implements Context {
   public location = NumLocation.independent;
   public result: string | null = null;
   public readonly numAddress: NumUri;
+  public targetExpandedSchemaVersion: string;
   _queries: ModuleDnsQueries;
   redirectCount = 0;
   userVariables: Map<string, UserVariable>;
@@ -245,6 +246,11 @@ class DummyContext implements Context {
     this.numAddress = numAddress;
     this._queries = createModuleDnsQueries(numAddress.port, numAddress);
     this.userVariables = new Map<string, UserVariable>();
+    this.targetExpandedSchemaVersion = '1';
+  }
+
+  setTargetExpandedSchemaVersion(v: string): void {
+    this.targetExpandedSchemaVersion = v;
   }
 
   /**

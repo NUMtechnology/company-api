@@ -35,7 +35,7 @@
       const uri = document.getElementById('urivalue').value;
       const start = Date.now();
 
-      lookup(uri, new CompanyApi.CompanyApiOptions(contactsDepth, imagesDepth)).then((result) => {
+      lookup(uri, new CompanyApi.CompanyApiOptions(contactsDepth, imagesDepth, new Map())).then((result) => {
         const end = Date.now();
         const duration = end - start;
         const pretty = JSON.stringify(result, null, 1);
