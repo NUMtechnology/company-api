@@ -10,9 +10,18 @@
   <script src="../dist/bundle.js"></script>
   <h1>NUM Company API Example</h1>
   <div>
-    <p>Domain = <input type="text" value="axa.co.uk" id='urivalue' onchange="reloadRecord()"></p>
+    <p>Domain = <input type="text" value="rainworthskoda.co.uk" id='urivalue' onchange="reloadRecord()"></p>
     <p>Contacts Query Depth = <input type="text" value="5" min=0 size=5 id='contactsDepth'></p>
     <p>Images Query Depth = <input type="text" value="5" min=0 size=5 id='imagesDepth'></p>
+  <div>
+    <label for="env">Environment:</label>
+
+    <select name="env" id="env" onchange="setEnvironment()">
+      <option value="test" selected>Test</option>
+      <option value="staging">Staging</option>
+      <option value="prod" >Prod</option>
+    </select>
+  </div>
     <input type="button" value="Reload" onclick="reloadRecord()"><span id="duration"></span>
   </div>
   <div style="border: 1px solid blue;width: fit-content;">
@@ -20,7 +29,9 @@
   </div>
   <script>
 
-    const api = CompanyApi.createCompanyApi();
+    const client = CompanyApi.createClient();
+    const api = CompanyApi.createCompanyApi(client);
+    setEnvironment();
 
     function lookup(uri, options) {
       return api.lookupDomain(uri, options);
@@ -49,6 +60,13 @@
       reloadRecord();
     });
 
+    function setEnvironment() {
+      const e = document.getElementById('env').value;
+      client.setDnsEnv(e);
+      client.setModuleEnv(e);
+      client.setenv(e);
+      reloadRecord();
+    }
   </script>
 </body>
 
