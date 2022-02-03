@@ -1,54 +1,56 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync } from 'fs';
 import loglevel, { Logger } from 'loglevel';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
+import { AxiosResponse } from 'axios';
 
 const log = loglevel as Logger;
 
 export class DummyResourceLoader implements ResourceLoader {
-  setenv(env: string) {
+  setenv(env: string): void {
     log.warn(`Ignoring call to setenv(${env})`);
   }
-  async load(url: string): Promise<Record<string, unknown>> {
+  async load(url: string): Promise<AxiosResponse<any> | null> {
     try {
       if (url.includes('/1/compact/v1/schema.json')) {
         log.info('Returning local file for url: ' + url);
-        return compactSchema1;
+        return { data: compactSchema1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/expanded/v1/schema.json')) {
         log.info('Returning local file for url: ' + url);
-        return schema1v1;
+        return { data: schema1v1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/expanded/v2/schema.json')) {
         log.info('Returning local file for url: ' + url);
-        return schema1v2;
+        return { data: schema1v2, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/3/expanded/v1/schema.json')) {
         log.info('Returning local file for url: ' + url);
-        return schema3v1;
+        return { data: schema3v1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/config.json')) {
         log.info('Returning local file for url: ' + url);
-        return moduleSpec1;
+        return { data: moduleSpec1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/locales/en-gb.json')) {
         log.info('Returning local file for url: ' + url);
-        return localeEnGb1;
+        return { data: localeEnGb1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/locales/en-us.json')) {
         log.info('Returning local file for url: ' + url);
-        return localeEnUs1;
+        return { data: localeEnUs1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/transformation/c1-e1.json')) {
         log.info('Returning local file for url: ' + url);
-        return schemaMap1;
+        return { data: schemaMap1, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/transformation/c1-e2.json')) {
         log.info('Returning local file for url: ' + url);
-        return schemaMap2;
+        return { data: schemaMap2, status: 200, statusText: 'OK', headers: [], config: {} };
       }
       if (url.includes('/1/transformation/map.json')) {
         log.info('Returning local file for url: ' + url);
-        return transMap;
+        return { data: transMap, status: 200, statusText: 'OK', headers: [], config: {} };
       }
     } catch (e) {
       if (e instanceof Error) {
@@ -56,7 +58,7 @@ export class DummyResourceLoader implements ResourceLoader {
       }
     }
     log.error(`Cannot load resource from ${url}`);
-    return {};
+    return null;
   }
 }
 const compactSchema1 = JSON.parse(readFileSync('../modules/data/1/compact/v1/schema.json', {}).toString());
