@@ -1,13 +1,15 @@
 import { expect } from 'chai';
 import deepEql from 'deep-eql';
-import log from 'loglevel';
 import { buildNumUri, createClient } from 'num-client';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
 import { DummyResourceLoader } from './DummyResourceLoader';
+import pino from 'pino';
+
+const log = pino();
 
 const dummyResourceLoader = new DummyResourceLoader();
 
-log.setLevel('debug');
+log.level = 'debug';
 
 describe('Company API Integration Tests', () => {
   it('Can lookup a NUM URI using a CompanyApi instance with depth of 0', async () => {

@@ -1,11 +1,13 @@
 import { expect } from 'chai';
-import log from 'loglevel';
 import { buildNumUri, NumClient, NumUri, PositiveInteger } from 'num-client';
 import { CallbackHandler } from 'num-client/dist/client';
 import { Context, NumLocation, UserVariable } from 'num-client/dist/context';
 import { createModuleDnsQueries, ModuleDnsQueries } from 'num-client/dist/modulednsqueries';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
+import pino from 'pino';
+
+const log = pino();
 
 describe('Company API', () => {
   it('Can lookup a NUM URI using a CompanyApi instance', async () => {

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { readFileSync } from 'fs';
-import loglevel, { Logger } from 'loglevel';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
 import { AxiosResponse } from 'axios';
+import pino from 'pino';
 
-const log = loglevel as Logger;
+const log = pino();
 
 export class DummyResourceLoader implements ResourceLoader {
   setenv(env: string): void {
