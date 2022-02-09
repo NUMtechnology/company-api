@@ -3,9 +3,7 @@ import deepEql from 'deep-eql';
 import { buildNumUri, createClient } from 'num-client';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
 import { DummyResourceLoader } from './DummyResourceLoader';
-import pino from 'pino';
-
-const log = pino();
+import { log } from 'num-easy-log';
 
 const dummyResourceLoader = new DummyResourceLoader();
 

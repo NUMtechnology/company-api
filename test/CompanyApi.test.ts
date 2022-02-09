@@ -5,9 +5,7 @@ import { Context, NumLocation, UserVariable } from 'num-client/dist/context';
 import { createModuleDnsQueries, ModuleDnsQueries } from 'num-client/dist/modulednsqueries';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
-import pino from 'pino';
-
-const log = pino();
+import { log } from 'num-easy-log';
 
 describe('Company API', () => {
   it('Can lookup a NUM URI using a CompanyApi instance', async () => {

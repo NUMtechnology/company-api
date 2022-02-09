@@ -17,9 +17,7 @@
 
 import { parseNumber } from 'libphonenumber-js';
 import metadata_min from 'libphonenumber-js/metadata.min.json';
-import pino from 'pino';
-
-const logger = pino();
+import { log } from 'num-easy-log';
 
 const metadata = metadata_min;
 

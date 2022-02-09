@@ -2,10 +2,7 @@
 import { readFileSync } from 'fs';
 import { ResourceLoader } from 'num-client/dist/resourceloader';
 import { AxiosResponse } from 'axios';
-import pino from 'pino';
-
-const log = pino();
-
+import { log } from 'num-easy-log';
 export class DummyResourceLoader implements ResourceLoader {
   setenv(env: string): void {
     log.warn(`Ignoring call to setenv(${env})`);
