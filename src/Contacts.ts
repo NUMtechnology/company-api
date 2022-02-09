@@ -30,7 +30,7 @@ export default class ContactsModuleHelper {
    * Available options are expandTelephone, expandHours, expandObjects and expandOpeningDoW.
    */
   static transform(numRecord, userVariables, options): any {
-    logger.debug('NUM Record before:', JSON.stringify(numRecord));
+    log.debug(`NUM Record before: ${JSON.stringify(numRecord)}`);
 
     const transformedNumRecord = {};
 
@@ -104,7 +104,7 @@ export default class ContactsModuleHelper {
 
     transformedNumRecord['numObject'] = numRecord;
 
-    logger.debug('NUM Record after:', JSON.stringify(transformedNumRecord));
+    log.debug(`NUM Record after: ${JSON.stringify(transformedNumRecord)}`);
 
     return transformedNumRecord;
   }
@@ -197,7 +197,7 @@ export default class ContactsModuleHelper {
         // Assume that it's ready to dial for domestic users but send error
         const objectValue = object[objectKey].value;
         if (objectValue.substring(0, 1) === '0' || objectValue.indexOf(')') > -1 || objectValue.indexOf('(') > -1 || objectValue.indexOf('|') > -1) {
-          logger.error(`Error: Telephone number '${objectValue}' not internationally formatted.`);
+          log.error(`Error: Telephone number '${objectValue}' not internationally formatted.`);
         } else {
           // if it isn't already plus prefixed, then prefix it
           if (objectValue.substring(0, 1) !== '+') {
@@ -439,7 +439,7 @@ export default class ContactsModuleHelper {
           return;
         }
         const timeZoneCity = setting.hours.time_zone_location;
-        logger.debug(`Time zone city: ${timeZoneCity}`);
+        log.debug(`Time zone city: ${timeZoneCity}`);
 
         // Put the original string in the hours object
         const hoursObject = { original: hoursArray };
@@ -533,7 +533,7 @@ export default class ContactsModuleHelper {
       // Is there only one part?
       if (hourParts.length === 1) {
         // Yes, it's invalid
-        logger.error('Invalid hour range');
+        log.error('Invalid hour range');
         return ['00:00-00:00'];
       } else {
         // Add these times to the array
@@ -688,7 +688,7 @@ export default class ContactsModuleHelper {
           }
         }
       } else {
-        logger.error('Error: invalid day range.');
+        log.error('Error: invalid day range.');
         return false;
       }
     } else {

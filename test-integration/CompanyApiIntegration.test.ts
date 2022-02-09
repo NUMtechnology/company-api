@@ -3,11 +3,11 @@ import deepEql from 'deep-eql';
 import { buildNumUri, createClient } from 'num-client';
 import { CompanyApiOptions, createCompanyApi } from '../src/CompanyApi';
 import { DummyResourceLoader } from './DummyResourceLoader';
-import { log } from 'num-easy-log';
+import { log, Level } from 'num-easy-log';
 
 const dummyResourceLoader = new DummyResourceLoader();
 
-log.level = 'debug';
+log.setLevel(Level.debug);
 
 describe('Company API Integration Tests', () => {
   it('Can lookup a NUM URI using a CompanyApi instance with depth of 0', async () => {
