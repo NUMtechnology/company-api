@@ -15,11 +15,7 @@
 // limitations under the License.
 //
 
-import { parseNumber } from 'libphonenumber-js';
-import metadata_min from 'libphonenumber-js/metadata.min.json';
 import { log } from 'num-easy-log';
-
-const metadata = metadata_min;
 
 export default class ContactsModuleHelper {
   /**
@@ -69,11 +65,11 @@ export default class ContactsModuleHelper {
           // Does the client want us to expand the telephone number object? This helps to display telephone
           // numbers in the format that users will be familiar with and also display the country of any international numbers
           if (options.expandTelephone) {
-            ContactsModuleHelper.expandTelephone(numRecord.contacts, 'telephone', userVariables['_C']);
+            ContactsModuleHelper.expandTelephone(numRecord.contacts, 'telephone');
           }
 
           if (options.expandSms) {
-            ContactsModuleHelper.expandTelephone(numRecord.contacts, 'sms', userVariables['_C']);
+            ContactsModuleHelper.expandTelephone(numRecord.contacts, 'sms');
           }
         }
 
@@ -385,7 +381,7 @@ export default class ContactsModuleHelper {
     return Object.keys(objectToCheck).length === 0 && objectToCheck.constructor === Object;
   }
 
-  static expandTelephone(objects, key, userCountry) {
+  static expandTelephone(objects, key) {
     for (const object of objects) {
       const objectKey = object['method_type'];
       if (objectKey === key) {
@@ -393,33 +389,10 @@ export default class ContactsModuleHelper {
         const telephoneNumber = object.value;
 
         object.value = { original: telephoneNumber };
-        const parsedNumber = parseNumber(telephoneNumber);
 
-        if (ContactsModuleHelper.isEmptyObject(parsedNumber)) {
-          object.value.error = 'Sms telephone number not in valid international format';
-          object.value.display = telephoneNumber;
-          object.value.dial = telephoneNumber.replace(/ /gi, '');
-        } else {
-          const telephoneCountry = parsedNumber['country'];
-          object.value.country = telephoneCountry;
-
-          if (telephoneCountry.toLowerCase() === userCountry.toLowerCase()) {
-            // display local format
-            const country = metadata.countries[telephoneCountry];
-            const internationalPrefix = '+' + country[0];
-            const nationalPrefix = country[5];
-
-            if (telephoneNumber.startsWith(internationalPrefix)) {
-              object.value.display = telephoneNumber.replace(internationalPrefix, nationalPrefix);
-            }
-
-            object.value.dial = telephoneNumber.replace(/ /gi, '');
-          } else {
-            // display international format
-            object.value.display = telephoneNumber;
-            object.value.dial = telephoneNumber.replace(/ /gi, '');
-          }
-        }
+        // display international format
+        object.value.display = telephoneNumber;
+        object.value.dial = telephoneNumber.replace(/ /gi, '');
       }
     }
   }
