@@ -7,7 +7,7 @@ import { log, Level } from 'num-easy-log';
 
 const dummyResourceLoader = new DummyResourceLoader();
 
-log.setLevel(Level.debug);
+log.setLevel(Level.info);
 
 describe('Company API Integration Tests', () => {
   it('Can lookup a NUM URI using a CompanyApi instance with depth of 0', async () => {
@@ -26,7 +26,7 @@ describe('Company API Integration Tests', () => {
     client.setResourceLoader(dummyResourceLoader);
     const api = createCompanyApi(client);
 
-    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(1, 0, new Map()));
+    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(1, 0, new Map(), 'en', 'gb'));
     expect(result).not.null;
 
     const expected = {
@@ -144,7 +144,7 @@ describe('Company API Integration Tests', () => {
 
     const expected = {
       object_type: 'organization',
-      object_display_name: 'Organisation',
+      object_display_name: 'Organization',
       name: 'AXA',
       slogan: null,
       contacts: [

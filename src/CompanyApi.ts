@@ -41,7 +41,13 @@ export class CompanyApiOptions {
    * @param imagesDepth how deep to recurse into sub-records - 1 to 5 is probably good enough.
    * @param moduleVersionMap a Map<number, string> linking module numbers to the associated module version, e.g. `map.set(1,'2')` for contacts. This can be an empty map if you want contacts version 2 and version 1 for everything else, otherwise populate the map with the non-default entries you need.
    */
-  constructor(readonly contactsDepth: number, readonly imagesDepth: number, readonly moduleVersionMap: Map<number, string>) {
+  constructor(
+    readonly contactsDepth: number,
+    readonly imagesDepth: number,
+    readonly moduleVersionMap: Map<number, string>,
+    readonly language?: string,
+    readonly country?: string
+  ) {
     if (!Number.isInteger(this.contactsDepth) || this.contactsDepth < 0) {
       this.contactsDepth = 0;
     }
@@ -52,6 +58,12 @@ export class CompanyApiOptions {
     if (this.moduleVersionMap.size === 0) {
       this.moduleVersionMap = new Map<number, string>();
       this.moduleVersionMap.set(1, '2');
+    }
+    if (!country) {
+      this.country = 'us';
+    }
+    if (!language) {
+      this.language = 'en';
     }
   }
 }
@@ -94,7 +106,7 @@ class CompanyApiImpl implements CompanyApi {
   lookupUri(uri: NumUri, options?: CompanyApiOptions): Promise<Record<string, unknown>> {
     // We're going to modify the options to control recursion depths, so make a copy or set large default values.
     const theOptions = options
-      ? new CompanyApiOptions(options.contactsDepth, options.imagesDepth, options.moduleVersionMap)
+      ? new CompanyApiOptions(options.contactsDepth, options.imagesDepth, options.moduleVersionMap, options.language, options.country)
       : new CompanyApiOptions(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, new Map());
 
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
@@ -161,6 +173,9 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
   if (!usedUris.has(contactsUriString)) {
     const handler = createDefaultCallbackHandler() as DefaultCallbackHandler;
     const contactsContext = client.createContext(lookup.contactsUri);
+    contactsContext.setUserVariable('_L', optionsParam.language ? optionsParam.language : 'en');
+    contactsContext.setUserVariable('_C', optionsParam.country ? optionsParam.country : 'us');
+
     const contactsModuleTargetVersion = options.moduleVersionMap.get(1);
     contactsContext.setTargetExpandedSchemaVersion(contactsModuleTargetVersion ? contactsModuleTargetVersion : '2');
     const contactsPromise = client.retrieveNumRecord(contactsContext, handler);
@@ -172,6 +187,9 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
     if (!usedUris.has(imagesUriString) && optionsParam.imagesDepth > 0) {
       const imagesHandler = createDefaultCallbackHandler() as DefaultCallbackHandler;
       const imagesModuleContext = client.createContext(lookup.imagesUri);
+      imagesModuleContext.setUserVariable('_L', optionsParam.language ? optionsParam.language : 'en');
+      imagesModuleContext.setUserVariable('_C', optionsParam.country ? optionsParam.country : 'us');
+
       const imagesModuleTargetVersion = options.moduleVersionMap.get(3);
       imagesModuleContext.setTargetExpandedSchemaVersion(imagesModuleTargetVersion ? imagesModuleTargetVersion : '1');
       imagesPromise = client.retrieveNumRecord(imagesModuleContext, imagesHandler);
@@ -181,7 +199,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
     // When the contacts and images records are available...
     return contactsPromise.then((contacts) => {
       const contactsObject: Record<string, unknown> =
-        contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: 'gb', _L: 'en' }, null) : {};
+        contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: optionsParam.country, _L: optionsParam.language }, null) : {};
       delete contactsObject['numVersion'];
 
       // There might be two keys left after deleting the `@n` key...
@@ -228,7 +246,7 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
     const contactsUriPromise = usedUris.get(contactsUriString) as PromiseAndHandler;
     return contactsUriPromise.promise.then((contacts) => {
       const contactsObject: Record<string, unknown> =
-        contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: 'gb', _L: 'en' }, null) : {};
+        contacts !== null ? ContactsModuleHelper.transform(JSON.parse(contacts), { _C: optionsParam.country, _L: optionsParam.language }, null) : {};
       delete contactsObject['numVersion'];
       delete contactsObject['populated'];
 

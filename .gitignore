@@ -8,3 +8,5 @@ node_modules
 test/test_data*.json
 test/Bulk.test.ts
 test/test_locale.json
+tags
+
