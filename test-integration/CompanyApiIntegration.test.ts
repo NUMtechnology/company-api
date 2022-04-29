@@ -15,7 +15,7 @@ describe('Company API Integration Tests', () => {
     client.setResourceLoader(dummyResourceLoader);
     const api = createCompanyApi(client);
 
-    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(0, 0, new Map()));
+    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions({ contactsDepth: 0, imagesDepth: 0 }));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal('{"metadata":{"errors":[]}}');
@@ -26,7 +26,7 @@ describe('Company API Integration Tests', () => {
     client.setResourceLoader(dummyResourceLoader);
     const api = createCompanyApi(client);
 
-    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(1, 0, new Map(), 'en', 'gb'));
+    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions({ contactsDepth: 1, imagesDepth: 0, country: 'gb' }));
     expect(result).not.null;
 
     const expected = {
@@ -139,7 +139,7 @@ describe('Company API Integration Tests', () => {
     client.setResourceLoader(dummyResourceLoader);
     const api = createCompanyApi(client);
 
-    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions(2, 0, new Map()));
+    const result = await api.lookupUri(buildNumUri('axa.co.uk'), new CompanyApiOptions({ contactsDepth: 2, imagesDepth: 0 }));
     expect(result).not.null;
 
     const expected = {

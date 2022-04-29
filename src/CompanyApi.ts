@@ -35,19 +35,20 @@ export interface CompanyApi {
  * Options for use with the CompanyApi
  */
 export class CompanyApiOptions {
+  public contactsDepth = Number.MAX_SAFE_INTEGER;
+  public imagesDepth = Number.MAX_SAFE_INTEGER;
+  public moduleVersionMap: Map<number, string> = new Map();
+  public language = 'en';
+  public country = 'us';
   /**
    *
    * @param contactsDepth how deep to recurse into sub-records - 1 to 5 is probably good enough.
    * @param imagesDepth how deep to recurse into sub-records - 1 to 5 is probably good enough.
    * @param moduleVersionMap a Map<number, string> linking module numbers to the associated module version, e.g. `map.set(1,'2')` for contacts. This can be an empty map if you want contacts version 2 and version 1 for everything else, otherwise populate the map with the non-default entries you need.
    */
-  constructor(
-    readonly contactsDepth: number,
-    readonly imagesDepth: number,
-    readonly moduleVersionMap: Map<number, string>,
-    readonly language?: string,
-    readonly country?: string
-  ) {
+  constructor(init?: Partial<CompanyApiOptions>) {
+    Object.assign(this, init);
+
     if (!Number.isInteger(this.contactsDepth) || this.contactsDepth < 0) {
       this.contactsDepth = 0;
     }
@@ -58,12 +59,6 @@ export class CompanyApiOptions {
     if (this.moduleVersionMap.size === 0) {
       this.moduleVersionMap = new Map<number, string>();
       this.moduleVersionMap.set(1, '2');
-    }
-    if (!country) {
-      this.country = 'us';
-    }
-    if (!language) {
-      this.language = 'en';
     }
   }
 }
@@ -105,9 +100,7 @@ class CompanyApiImpl implements CompanyApi {
    */
   lookupUri(uri: NumUri, options?: CompanyApiOptions): Promise<Record<string, unknown>> {
     // We're going to modify the options to control recursion depths, so make a copy or set large default values.
-    const theOptions = options
-      ? new CompanyApiOptions(options.contactsDepth, options.imagesDepth, options.moduleVersionMap, options.language, options.country)
-      : new CompanyApiOptions(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, new Map());
+    const theOptions = new CompanyApiOptions(options);
 
     const lookup = new Lookup({}, uri.withPort(MODULE_1), uri.withPort(MODULE_3));
     const uriMap = new Map<string, PromiseAndHandler>();
@@ -166,7 +159,10 @@ const retrieveRecord = (client: NumClient, lookup: Lookup, usedUris: UriToPromis
   if (optionsParam.contactsDepth <= 0) {
     return Promise.resolve({});
   }
-  const options = new CompanyApiOptions(optionsParam.contactsDepth - 1, optionsParam.imagesDepth - 1, optionsParam.moduleVersionMap);
+  const options = new CompanyApiOptions(optionsParam);
+  options.contactsDepth = options.contactsDepth - 1;
+  options.imagesDepth = options.imagesDepth - 1;
+  //
   // Start a contacts record lookup if there isn't already one outstanding.
   const contactsUriString = lookup.contactsUri.toString();
 

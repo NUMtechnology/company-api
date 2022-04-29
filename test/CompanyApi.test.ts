@@ -26,7 +26,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(0, 0, new Map()));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions({ contactsDepth: 0, imagesDepth: 0 }));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal('{"metadata":{"errors":[]}}');
@@ -37,7 +37,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 0, new Map()));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions({ contactsDepth: 1, imagesDepth: 0 }));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -50,7 +50,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(1, 1, new Map()));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions({ contactsDepth: 1, imagesDepth: 1 }));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -63,7 +63,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 1, new Map()));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions({ contactsDepth: 2, imagesDepth: 1 }));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
@@ -76,7 +76,7 @@ describe('Company API', () => {
 
     const api = createCompanyApi(dummy);
 
-    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions(2, 2, new Map()));
+    const result = await api.lookupUri(buildNumUri('dummy.com'), new CompanyApiOptions({ contactsDepth: 2, imagesDepth: 2 }));
     expect(result).not.null;
     const resultStr = JSON.stringify(result);
     expect(resultStr).to.equal(
