@@ -190,18 +190,20 @@ export default class ContactsModuleHelper {
 
   static readyToDial(objects) {
     for (const object of objects) {
-      const objectKey = Object.keys(object)[0];
-      const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
-      if (objectType === 'method' && (objectKey === 'telephone' || objectKey === 'sms')) {
-        // if number starts with zero or has brackets or dashes then it's not in the correct format.
-        // Assume that it's ready to dial for domestic users but send error
-        const objectValue = object[objectKey].value;
-        if (objectValue.substring(0, 1) === '0' || objectValue.indexOf(')') > -1 || objectValue.indexOf('(') > -1 || objectValue.indexOf('|') > -1) {
-          log.error(`Error: Telephone number '${objectValue}' not internationally formatted.`);
-        } else {
-          // if it isn't already plus prefixed, then prefix it
-          if (objectValue.substring(0, 1) !== '+') {
-            object[objectKey].value = '+' + objectValue;
+      if (object) {
+        const objectKey = Object.keys(object)[0];
+        const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
+        if (objectType === 'method' && (objectKey === 'telephone' || objectKey === 'sms')) {
+          // if number starts with zero or has brackets or dashes then it's not in the correct format.
+          // Assume that it's ready to dial for domestic users but send error
+          const objectValue = object[objectKey].value;
+          if (objectValue.substring(0, 1) === '0' || objectValue.indexOf(')') > -1 || objectValue.indexOf('(') > -1 || objectValue.indexOf('|') > -1) {
+            log.error(`Error: Telephone number '${objectValue}' not internationally formatted.`);
+          } else {
+            // if it isn't already plus prefixed, then prefix it
+            if (objectValue.substring(0, 1) !== '+') {
+              object[objectKey].value = '+' + objectValue;
+            }
           }
         }
       }
@@ -210,34 +212,36 @@ export default class ContactsModuleHelper {
 
   static addQueryToObjects(objects) {
     for (const object of objects) {
-      const objectKey = Object.keys(object)[0];
-      const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
+      if (object) {
+        const objectKey = Object.keys(object)[0];
+        const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
 
-      if (objectType === 'entity') {
-        const objectName = object[objectKey].name.trim();
+        if (objectType === 'entity') {
+          const objectName = object[objectKey].name.trim();
 
-        if (!object[objectKey]['@L']) {
-          let queryToAdd;
+          if (!object[objectKey]['@L']) {
+            let queryToAdd;
 
-          // Add a query to the object based on the object name
-          if (objectKey === 'organisation' || objectKey === 'organisation_link') {
-            // For organisations, the query is set to the object name
-            queryToAdd = objectName;
-          } else {
-            if (objectName.substring(0, 1) === '^') {
-              object[objectKey].name = objectName.substring(1, objectName.length);
-            }
-
-            if (objectKey === 'person' || objectKey === 'person_link') {
-              // The query for people is the object name with spaces replaced by dots
-              queryToAdd = objectName.replace(/ /g, '.');
+            // Add a query to the object based on the object name
+            if (objectKey === 'organisation' || objectKey === 'organisation_link') {
+              // For organisations, the query is set to the object name
+              queryToAdd = objectName;
             } else {
-              // The query for any other object is the object name with spaces replaced by underscores
-              queryToAdd = objectName.replace(/ /g, '_');
-            }
-          }
+              if (objectName.substring(0, 1) === '^') {
+                object[objectKey].name = objectName.substring(1, objectName.length);
+              }
 
-          object[objectKey]['@L'] = queryToAdd.toLowerCase();
+              if (objectKey === 'person' || objectKey === 'person_link') {
+                // The query for people is the object name with spaces replaced by dots
+                queryToAdd = objectName.replace(/ /g, '.');
+              } else {
+                // The query for any other object is the object name with spaces replaced by underscores
+                queryToAdd = objectName.replace(/ /g, '_');
+              }
+            }
+
+            object[objectKey]['@L'] = queryToAdd.toLowerCase();
+          }
         }
       }
     }
@@ -258,53 +262,55 @@ export default class ContactsModuleHelper {
         const contacts = organisation.contacts;
         // Loop through the associated objects
         for (const contact of contacts) {
-          const objectKey = contact.method_type;
-          const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
+          if (contact) {
+            const objectKey = contact.method_type;
+            const objectType = ContactsModuleHelper.objectKeyToObjectType(objectKey);
 
-          const collectiveTerm = ContactsModuleHelper.getPlural(objectType);
+            const collectiveTerm = ContactsModuleHelper.getPlural(objectType);
 
-          // Add an image for for each
-          this.addImage(contact, objectType, objectKey);
+            // Add an image for for each
+            this.addImage(contact, objectType, objectKey);
 
-          // Duplicate the object
-          const dupeObject = JSON.parse(JSON.stringify(contact));
-          // Entities must have a query value, so if they don't have one then derive it from the name
+            // Duplicate the object
+            const dupeObject = JSON.parse(JSON.stringify(contact));
+            // Entities must have a query value, so if they don't have one then derive it from the name
 
-          // Do we already have an object with a key of the collective name, e.g. "media"?
-          if (!organisation[collectiveTerm]) {
-            // No, create one
-            organisation[collectiveTerm] = {};
-          }
-          // Do we already have an object containing this object type within the object found/created above?
-          // e.g. media.telephone
-          if (!organisation[collectiveTerm][objectKey]) {
-            // No, create it
-            const keysToIgnore = ContactsModuleHelper.getKeyData(objectType, objectKey);
-            // Ignore the object_type key too
-            keysToIgnore.push('method_type');
-            keysToIgnore.push('action');
-            // Create the object, copying only the repetitive data, e.g. display name, prefix, etc
-            organisation[collectiveTerm][objectKey] = ContactsModuleHelper.copyObjectParts(dupeObject, keysToIgnore);
-          }
-          // What's the key data for this object - e.g. description, value, hours
-          // Metadata that's unique for each object?
-          const keyData = ContactsModuleHelper.getKeyData(objectType, objectKey);
-          // Do we already have a list of values for this object type?
-          // e.g. media.telephone.list
-          if (!organisation[collectiveTerm][objectKey].list) {
-            // Not, create one
-            organisation[collectiveTerm][objectKey].list = [];
-          }
-          // Add an empty object to the list
-          const thisObject = {};
-          organisation[collectiveTerm][objectKey].list.push(thisObject);
+            // Do we already have an object with a key of the collective name, e.g. "media"?
+            if (!organisation[collectiveTerm]) {
+              // No, create one
+              organisation[collectiveTerm] = {};
+            }
+            // Do we already have an object containing this object type within the object found/created above?
+            // e.g. media.telephone
+            if (!organisation[collectiveTerm][objectKey]) {
+              // No, create it
+              const keysToIgnore = ContactsModuleHelper.getKeyData(objectType, objectKey);
+              // Ignore the object_type key too
+              keysToIgnore.push('method_type');
+              keysToIgnore.push('action');
+              // Create the object, copying only the repetitive data, e.g. display name, prefix, etc
+              organisation[collectiveTerm][objectKey] = ContactsModuleHelper.copyObjectParts(dupeObject, keysToIgnore);
+            }
+            // What's the key data for this object - e.g. description, value, hours
+            // Metadata that's unique for each object?
+            const keyData = ContactsModuleHelper.getKeyData(objectType, objectKey);
+            // Do we already have a list of values for this object type?
+            // e.g. media.telephone.list
+            if (!organisation[collectiveTerm][objectKey].list) {
+              // Not, create one
+              organisation[collectiveTerm][objectKey].list = [];
+            }
+            // Add an empty object to the list
+            const thisObject = {};
+            organisation[collectiveTerm][objectKey].list.push(thisObject);
 
-          // Loop through the key data for this object
-          for (const ky of keyData) {
-            // Get the key field name
-            if (dupeObject[ky]) {
-              // Add the keydata to the object
-              thisObject[ky] = dupeObject[ky];
+            // Loop through the key data for this object
+            for (const ky of keyData) {
+              // Get the key field name
+              if (dupeObject[ky]) {
+                // Add the keydata to the object
+                thisObject[ky] = dupeObject[ky];
+              }
             }
           }
         }
@@ -436,7 +442,7 @@ export default class ContactsModuleHelper {
         const hoursArray = setting.hours.available;
         if (!hoursArray) {
           delete setting.hours['available'];
-          return;
+          continue;
         }
         const timeZoneCity = setting.hours.time_zone_location;
         log.debug(`Time zone city: ${timeZoneCity}`);
