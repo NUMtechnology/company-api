@@ -10,3 +10,5 @@ test/Bulk.test.ts
 test/test_locale.json
 tags
 
+*.swp
+

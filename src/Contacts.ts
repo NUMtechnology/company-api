@@ -409,22 +409,26 @@ export default class ContactsModuleHelper {
           const telephoneCountry = parsedNumber['country'];
           object.value.country = telephoneCountry;
 
+          const country = metadata.countries[telephoneCountry];
+          const internationalPrefix = '+' + country[0];
+          const nationalPrefix = country[5];
+
           if (telephoneCountry.toLowerCase() === userCountry.toLowerCase()) {
             // display local format
-            const country = metadata.countries[telephoneCountry];
-            const internationalPrefix = '+' + country[0];
-            const nationalPrefix = country[5];
-
-            if (telephoneNumber.startsWith(internationalPrefix)) {
-              object.value.display = telephoneNumber.replace(internationalPrefix, nationalPrefix);
+            if (telephoneCountry.toLowerCase() === 'us') {
+              object.value.display = telephoneNumber.replace(internationalPrefix, '').trim();
+            } else if (telephoneNumber.startsWith(internationalPrefix)) {
+              object.value.display = telephoneNumber.replace(internationalPrefix, nationalPrefix).trim();
             }
-
-            object.value.dial = telephoneNumber.replace(/ /gi, '');
           } else {
             // display international format
-            object.value.display = telephoneNumber;
-            object.value.dial = telephoneNumber.replace(/ /gi, '');
+            if (!telephoneNumber.startsWith(internationalPrefix + ' ')) {
+              object.value.display = telephoneNumber.replace(internationalPrefix, internationalPrefix + ' ').trim();
+            } else {
+              object.value.display = telephoneNumber.trim();
+            }
           }
+          object.value.dial = telephoneNumber.replace(/ /gi, '');
         }
       }
     }

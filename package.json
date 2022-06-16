@@ -1,6 +1,6 @@
 {
   "name": "company-api",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "A library to lookup NUM records recursively to produce an aggregated result.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
