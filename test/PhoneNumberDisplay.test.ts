@@ -125,4 +125,66 @@ describe('Phone Number Display', () => {
       '{"numVersion":1,"@version":2,"numObject":{"object_type":"organization","object_display_name":"Organisation","name":"Newcastle International Airport","slogan":null,"contacts":[{"method_type":"telephone","method_display_name":"Telephone","description":"Customer Information","description_default":"Call","action":"tel:+1 75 76 77 47 01","value":{"original":"+1 75 76 77 47 01","country":"US","display":"75 76 77 47 01","dial":"+17576774701"},"controller":null,"hours":{"time_zone_location":"LON"},"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}],"methods":{"telephone":{"method_display_name":"Telephone","description_default":"Call","controller":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"hours":{"time_zone_location":"LON"},"action":"tel:+1 75 76 77 47 01","description":"Customer Information","value":{"original":"+1 75 76 77 47 01","country":"US","display":"75 76 77 47 01","dial":"+17576774701"}}]}}}}'
     );
   });
+
+  it('can display FR phone numbers correctly in the UK.', async () => {
+    const data = {
+      '@n': 1,
+      '@version': 2,
+      object_type: 'organization',
+      object_display_name: 'Organisation',
+      name: 'Newcastle International Airport',
+      slogan: null,
+      contacts: [
+        {
+          method_type: 'telephone',
+          method_display_name: 'Telephone',
+          description: 'Customer Information',
+          description_default: 'Call',
+          action: 'tel:+331 57 77 00 00',
+          value: '+331 57 77 00 00',
+          controller: null,
+          hours: {
+            available: null,
+            time_zone_location: 'LON',
+          },
+        },
+      ],
+    };
+
+    const result = ContactsModuleHelper.transform(data, { _C: 'gb' }, null);
+    expect(JSON.stringify(result)).to.equal(
+      '{"numVersion":1,"@version":2,"numObject":{"object_type":"organization","object_display_name":"Organisation","name":"Newcastle International Airport","slogan":null,"contacts":[{"method_type":"telephone","method_display_name":"Telephone","description":"Customer Information","description_default":"Call","action":"tel:+331 57 77 00 00","value":{"original":"+331 57 77 00 00","country":"FR","display":"+33 1 57 77 00 00","dial":"+33157770000"},"controller":null,"hours":{"time_zone_location":"LON"},"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}],"methods":{"telephone":{"method_display_name":"Telephone","description_default":"Call","controller":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"hours":{"time_zone_location":"LON"},"action":"tel:+331 57 77 00 00","description":"Customer Information","value":{"original":"+331 57 77 00 00","country":"FR","display":"+33 1 57 77 00 00","dial":"+33157770000"}}]}}}}'
+    );
+  });
+
+  it('can display FR phone numbers correctly in the FR.', async () => {
+    const data = {
+      '@n': 1,
+      '@version': 2,
+      object_type: 'organization',
+      object_display_name: 'Organisation',
+      name: 'Newcastle International Airport',
+      slogan: null,
+      contacts: [
+        {
+          method_type: 'telephone',
+          method_display_name: 'Telephone',
+          description: 'Customer Information',
+          description_default: 'Call',
+          action: 'tel:+331 57 77 00 00',
+          value: '+331 57 77 00 00',
+          controller: null,
+          hours: {
+            available: null,
+            time_zone_location: 'LON',
+          },
+        },
+      ],
+    };
+
+    const result = ContactsModuleHelper.transform(data, { _C: 'fr' }, null);
+    expect(JSON.stringify(result)).to.equal(
+      '{"numVersion":1,"@version":2,"numObject":{"object_type":"organization","object_display_name":"Organisation","name":"Newcastle International Airport","slogan":null,"contacts":[{"method_type":"telephone","method_display_name":"Telephone","description":"Customer Information","description_default":"Call","action":"tel:+331 57 77 00 00","value":{"original":"+331 57 77 00 00","country":"FR","display":"01 57 77 00 00","dial":"+33157770000"},"controller":null,"hours":{"time_zone_location":"LON"},"icon":"https://100px.logos.uk/telephone.media.num.uk.png"}],"methods":{"telephone":{"method_display_name":"Telephone","description_default":"Call","controller":null,"icon":"https://100px.logos.uk/telephone.media.num.uk.png","list":[{"hours":{"time_zone_location":"LON"},"action":"tel:+331 57 77 00 00","description":"Customer Information","value":{"original":"+331 57 77 00 00","country":"FR","display":"01 57 77 00 00","dial":"+33157770000"}}]}}}}'
+    );
+  });
 });
